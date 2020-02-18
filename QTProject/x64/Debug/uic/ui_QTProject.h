@@ -13,6 +13,7 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
+#include <QtWidgets/QGroupBox>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
@@ -20,6 +21,7 @@
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QStatusBar>
+#include <QtWidgets/QTextEdit>
 #include <QtWidgets/QToolBar>
 #include <QtWidgets/QWidget>
 
@@ -46,6 +48,22 @@ public:
     QWidget *centralWidget;
     QLabel *pictureDraw;
     QPushButton *PaintButton;
+    QPushButton *WhiteButton;
+    QPushButton *RedButton;
+    QPushButton *BlueButton;
+    QPushButton *RectangleButton;
+    QPushButton *CircleButton;
+    QPushButton *LineButton;
+    QPushButton *TextButton;
+    QGroupBox *groupBox;
+    QLabel *WidthLabel;
+    QTextEdit *textEdit;
+    QLabel *HeightLabel;
+    QTextEdit *textEdit_2;
+    QTextEdit *textEdit_3;
+    QLabel *FileLabel;
+    QLabel *testlabel;
+    QLabel *testlabel2;
     QMenuBar *menuBar;
     QMenu *menuQTProject;
     QMenu *menuOption;
@@ -57,7 +75,13 @@ public:
     {
         if (QTProjectClass->objectName().isEmpty())
             QTProjectClass->setObjectName(QStringLiteral("QTProjectClass"));
-        QTProjectClass->resize(997, 865);
+        QTProjectClass->resize(1292, 862);
+        QTProjectClass->setMouseTracking(true);
+        QTProjectClass->setTabletTracking(false);
+        QIcon icon;
+        icon.addFile(QStringLiteral("../../../../.designer/White.png"), QSize(), QIcon::Normal, QIcon::Off);
+        QTProjectClass->setWindowIcon(icon);
+        QTProjectClass->setDocumentMode(false);
         actionOpen = new QAction(QTProjectClass);
         actionOpen->setObjectName(QStringLiteral("actionOpen"));
         actionSave = new QAction(QTProjectClass);
@@ -92,15 +116,97 @@ public:
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         pictureDraw = new QLabel(centralWidget);
         pictureDraw->setObjectName(QStringLiteral("pictureDraw"));
-        pictureDraw->setGeometry(QRect(60, 10, 311, 291));
+        pictureDraw->setEnabled(true);
+        pictureDraw->setGeometry(QRect(20, 20, 451, 371));
+        pictureDraw->setCursor(QCursor(Qt::CrossCursor));
+        pictureDraw->setMouseTracking(false);
+        pictureDraw->setTabletTracking(true);
+        pictureDraw->setFrameShape(QFrame::Box);
+        pictureDraw->setScaledContents(true);
         PaintButton = new QPushButton(centralWidget);
         PaintButton->setObjectName(QStringLiteral("PaintButton"));
-        PaintButton->setGeometry(QRect(430, 10, 93, 31));
+        PaintButton->setGeometry(QRect(1210, 40, 51, 31));
+        PaintButton->setAcceptDrops(false);
+        PaintButton->setCheckable(true);
+        PaintButton->setChecked(false);
+        WhiteButton = new QPushButton(centralWidget);
+        WhiteButton->setObjectName(QStringLiteral("WhiteButton"));
+        WhiteButton->setGeometry(QRect(1210, 160, 51, 28));
+        WhiteButton->setCheckable(true);
+        RedButton = new QPushButton(centralWidget);
+        RedButton->setObjectName(QStringLiteral("RedButton"));
+        RedButton->setGeometry(QRect(1210, 200, 51, 28));
+        RedButton->setCheckable(true);
+        BlueButton = new QPushButton(centralWidget);
+        BlueButton->setObjectName(QStringLiteral("BlueButton"));
+        BlueButton->setGeometry(QRect(1210, 240, 51, 28));
+        BlueButton->setCheckable(true);
+        RectangleButton = new QPushButton(centralWidget);
+        RectangleButton->setObjectName(QStringLiteral("RectangleButton"));
+        RectangleButton->setGeometry(QRect(1210, 280, 51, 28));
+        RectangleButton->setCheckable(true);
+        CircleButton = new QPushButton(centralWidget);
+        CircleButton->setObjectName(QStringLiteral("CircleButton"));
+        CircleButton->setGeometry(QRect(1210, 320, 51, 28));
+        CircleButton->setCheckable(true);
+        LineButton = new QPushButton(centralWidget);
+        LineButton->setObjectName(QStringLiteral("LineButton"));
+        LineButton->setGeometry(QRect(1210, 80, 51, 28));
+        LineButton->setCheckable(true);
+        TextButton = new QPushButton(centralWidget);
+        TextButton->setObjectName(QStringLiteral("TextButton"));
+        TextButton->setGeometry(QRect(1210, 120, 51, 28));
+        TextButton->setCheckable(true);
+        groupBox = new QGroupBox(centralWidget);
+        groupBox->setObjectName(QStringLiteral("groupBox"));
+        groupBox->setGeometry(QRect(970, 370, 301, 181));
+        WidthLabel = new QLabel(groupBox);
+        WidthLabel->setObjectName(QStringLiteral("WidthLabel"));
+        WidthLabel->setGeometry(QRect(90, 80, 191, 31));
+        textEdit = new QTextEdit(groupBox);
+        textEdit->setObjectName(QStringLiteral("textEdit"));
+        textEdit->setEnabled(false);
+        textEdit->setGeometry(QRect(10, 80, 61, 31));
+        textEdit->setFrameShape(QFrame::NoFrame);
+        textEdit->setLineWidth(0);
+        textEdit->setLineWrapMode(QTextEdit::NoWrap);
+        textEdit->setReadOnly(true);
+        textEdit->setAcceptRichText(true);
+        HeightLabel = new QLabel(groupBox);
+        HeightLabel->setObjectName(QStringLiteral("HeightLabel"));
+        HeightLabel->setGeometry(QRect(90, 120, 191, 31));
+        textEdit_2 = new QTextEdit(groupBox);
+        textEdit_2->setObjectName(QStringLiteral("textEdit_2"));
+        textEdit_2->setEnabled(false);
+        textEdit_2->setGeometry(QRect(10, 120, 71, 31));
+        textEdit_2->setFrameShape(QFrame::NoFrame);
+        textEdit_2->setLineWidth(0);
+        textEdit_2->setLineWrapMode(QTextEdit::NoWrap);
+        textEdit_2->setReadOnly(true);
+        textEdit_2->setAcceptRichText(true);
+        textEdit_3 = new QTextEdit(groupBox);
+        textEdit_3->setObjectName(QStringLiteral("textEdit_3"));
+        textEdit_3->setEnabled(false);
+        textEdit_3->setGeometry(QRect(10, 40, 61, 31));
+        textEdit_3->setFrameShape(QFrame::NoFrame);
+        textEdit_3->setLineWidth(0);
+        textEdit_3->setLineWrapMode(QTextEdit::NoWrap);
+        textEdit_3->setReadOnly(true);
+        textEdit_3->setAcceptRichText(true);
+        FileLabel = new QLabel(groupBox);
+        FileLabel->setObjectName(QStringLiteral("FileLabel"));
+        FileLabel->setGeometry(QRect(90, 40, 191, 31));
+        testlabel = new QLabel(centralWidget);
+        testlabel->setObjectName(QStringLiteral("testlabel"));
+        testlabel->setGeometry(QRect(990, 590, 101, 31));
+        testlabel2 = new QLabel(centralWidget);
+        testlabel2->setObjectName(QStringLiteral("testlabel2"));
+        testlabel2->setGeometry(QRect(990, 630, 101, 31));
         QTProjectClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(QTProjectClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
         menuBar->setEnabled(true);
-        menuBar->setGeometry(QRect(0, 0, 997, 26));
+        menuBar->setGeometry(QRect(0, 0, 1292, 26));
         menuQTProject = new QMenu(menuBar);
         menuQTProject->setObjectName(QStringLiteral("menuQTProject"));
         menuOption = new QMenu(menuBar);
@@ -144,22 +250,65 @@ public:
     {
         QTProjectClass->setWindowTitle(QApplication::translate("QTProjectClass", "QTProject", Q_NULLPTR));
         actionOpen->setText(QApplication::translate("QTProjectClass", "Open", Q_NULLPTR));
+#ifndef QT_NO_SHORTCUT
+        actionOpen->setShortcut(QApplication::translate("QTProjectClass", "Ctrl+O", Q_NULLPTR));
+#endif // QT_NO_SHORTCUT
         actionSave->setText(QApplication::translate("QTProjectClass", "Save", Q_NULLPTR));
         actionExit->setText(QApplication::translate("QTProjectClass", "Exit", Q_NULLPTR));
+#ifndef QT_NO_SHORTCUT
+        actionExit->setShortcut(QApplication::translate("QTProjectClass", "Esc", Q_NULLPTR));
+#endif // QT_NO_SHORTCUT
         actionUndo->setText(QApplication::translate("QTProjectClass", "undo", Q_NULLPTR));
+#ifndef QT_NO_SHORTCUT
+        actionUndo->setShortcut(QApplication::translate("QTProjectClass", "Ctrl+Z", Q_NULLPTR));
+#endif // QT_NO_SHORTCUT
         actionView->setText(QApplication::translate("QTProjectClass", "View", Q_NULLPTR));
         actionRedo->setText(QApplication::translate("QTProjectClass", "redo", Q_NULLPTR));
+#ifndef QT_NO_SHORTCUT
+        actionRedo->setShortcut(QApplication::translate("QTProjectClass", "Ctrl+X", Q_NULLPTR));
+#endif // QT_NO_SHORTCUT
         actionVersion->setText(QApplication::translate("QTProjectClass", "Version", Q_NULLPTR));
         actionUser->setText(QApplication::translate("QTProjectClass", "User", Q_NULLPTR));
         actionCut->setText(QApplication::translate("QTProjectClass", "Cut", Q_NULLPTR));
         actionNew->setText(QApplication::translate("QTProjectClass", "New", Q_NULLPTR));
         actionSaveAs->setText(QApplication::translate("QTProjectClass", "Save As", Q_NULLPTR));
+#ifndef QT_NO_SHORTCUT
+        actionSaveAs->setShortcut(QApplication::translate("QTProjectClass", "Ctrl+A", Q_NULLPTR));
+#endif // QT_NO_SHORTCUT
         actionPrint->setText(QApplication::translate("QTProjectClass", "Print", Q_NULLPTR));
         actionScreenShot->setText(QApplication::translate("QTProjectClass", "Screen Shot", Q_NULLPTR));
         actionCopy->setText(QApplication::translate("QTProjectClass", "Copy", Q_NULLPTR));
         actionSelect_All->setText(QApplication::translate("QTProjectClass", "Select All", Q_NULLPTR));
         pictureDraw->setText(QString());
         PaintButton->setText(QApplication::translate("QTProjectClass", "Paint", Q_NULLPTR));
+        WhiteButton->setText(QApplication::translate("QTProjectClass", "White", Q_NULLPTR));
+        RedButton->setText(QApplication::translate("QTProjectClass", "Red", Q_NULLPTR));
+        BlueButton->setText(QApplication::translate("QTProjectClass", "Blue", Q_NULLPTR));
+        RectangleButton->setText(QApplication::translate("QTProjectClass", "Rect", Q_NULLPTR));
+        CircleButton->setText(QApplication::translate("QTProjectClass", "Circ", Q_NULLPTR));
+        LineButton->setText(QApplication::translate("QTProjectClass", "Line", Q_NULLPTR));
+        TextButton->setText(QApplication::translate("QTProjectClass", "Text", Q_NULLPTR));
+        groupBox->setTitle(QApplication::translate("QTProjectClass", "Information", Q_NULLPTR));
+        WidthLabel->setText(QString());
+        textEdit->setHtml(QApplication::translate("QTProjectClass", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'Gulim'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:10pt;\">Width :</span></p></body></html>", Q_NULLPTR));
+        HeightLabel->setText(QString());
+        textEdit_2->setHtml(QApplication::translate("QTProjectClass", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'Gulim'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:10pt;\">Height :</span></p></body></html>", Q_NULLPTR));
+        textEdit_3->setHtml(QApplication::translate("QTProjectClass", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'Gulim'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:10pt;\">File :</span></p></body></html>", Q_NULLPTR));
+        FileLabel->setText(QString());
+        testlabel->setText(QApplication::translate("QTProjectClass", "TextLabel", Q_NULLPTR));
+        testlabel2->setText(QApplication::translate("QTProjectClass", "TextLabel", Q_NULLPTR));
         menuQTProject->setTitle(QApplication::translate("QTProjectClass", "File", Q_NULLPTR));
         menuOption->setTitle(QApplication::translate("QTProjectClass", "Edit", Q_NULLPTR));
         menuHelp->setTitle(QApplication::translate("QTProjectClass", "Help", Q_NULLPTR));

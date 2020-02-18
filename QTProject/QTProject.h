@@ -24,8 +24,10 @@
 #include <qfiledialog.h>
 #include <QImage>
 #include <QPainter>
+#include <Qt3DInput/qmouseevent.h>
 #include <qdebug.h>
 #include <qmutex.h>
+#include <qicon.h>
 #include <qwidget.h>
 #include <qmatrix.h>
 #include "ui_QTProject.h"
@@ -50,6 +52,7 @@ public:
 	stack<QPixmap> redostack;
 	int brushcount;
 	Mat image;
+	QMouseEvent* ev;
 
 private:
 	Ui::QTProjectClass ui;
@@ -57,10 +60,13 @@ private:
 	int posY;
 	int absX;
 	int absY;
-	Point ptOld;
+	int oneclick;
+
+//	void mouseMoveEvent(QMouseEvent* mouse);
+//	void mouseRelease(QMouseEvent*);
 
 public slots:
-	void brushClicked();
+	void imageOpen();
 	void closeClicked();
 	void imageCapture();
 	void imageSaveAs();

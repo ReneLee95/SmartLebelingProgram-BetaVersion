@@ -5,7 +5,7 @@ QTProject::QTProject(QWidget *parent)
 	ui.setupUi(this);
 
 	setWindowFlags(Qt::CustomizeWindowHint);
-	connect(ui.actionOpen, SIGNAL(triggered()), this, SLOT(brushClicked()));
+	connect(ui.actionOpen, SIGNAL(triggered()), this, SLOT(imageOpen()));
 	connect(ui.actionScreenShot, SIGNAL(triggered()), this, SLOT(imageCapture()));
 	connect(ui.actionExit, SIGNAL(triggered()), this, SLOT(closeClicked()));
 	connect(ui.actionSaveAs, SIGNAL(triggered()), this, SLOT(imageSaveAs()));
@@ -16,23 +16,46 @@ QTProject::QTProject(QWidget *parent)
 	connect(ui.actionScreenShot, SIGNAL(triggered()), this, SLOT(Screenshot()));
 	connect(ui.pictureDraw, SIGNAL(Mouse_Pressed()), this, SLOT(DrawLine()));
 	connect(ui.PaintButton, SIGNAL(clicked()), this, SLOT(brushcountfunc()));
+	
+	QMouseEvent* ev;
+	posX = this->geometry().x();
+	posY = this->geometry().y();
+	absX = this->geometry().x();
+	absY = this->geometry().y();
+}
+/*
+void QTProject::mouseMoveEvent(QMouseEvent* mouse) {
+	if (this->isMaximized() == true) return;
 
-	posX = 0;
-	posY = 0;
-	absX = 0;
-	absY = 0;
-	brushcount = 0;
+	if (mouse->button() == Qt::RightButton) return;
+
+	posX = QCursor::pos().x();
+	posY = QCursor::pos().y();
+
+	if (oneclick == 0) {
+		absX = mouse->pos().x() + 7;
+		absY = mouse->pos().y() + 7;
+		oneclick++;
+	}
+	this->move(posX - absX, posY - absY);
 }
 
-void QTProject::brushClicked(){
+void QTProject::mouseRelease(QMouseEvent*) {
+	oneclick = 0;
+}
+*/
+void QTProject::imageOpen(){
 	QString filePath = imgLoad.getOpenFileName(this, "Load Image", "", "Image Files(*.png *.jpg *.bmp *.raw)");
 
 	QString fileName = filePath.section("/", -1);
+	ui.FileLabel->setText(fileName);
 	img.load(filePath);
-//	image = imread(filePath.toStdString());
 
 	ui.pictureDraw->setPixmap(img);
-//	imshow("Load Image", image);
+	int w = img.width();
+	ui.WidthLabel->setText(QString::number(w));
+	int h = img.height();
+	ui.HeightLabel->setText(QString::number(h));
 	undostack.push(img);
 	ui.pictureDraw->setScaledContents(true);
 }
@@ -60,34 +83,19 @@ void QTProject::imageCapture(){
 void QTProject::paintEvent(QPaintEvent* event){
 	Q_UNUSED(event);
 	QPainter painter;
-	QPen pen(Qt::red);
+	QPen pen(Qt::black);
 	posX = QCursor::pos().x();
 	posY = QCursor::pos().y();
-	if (brushcount == 1)
-	{
-		if (MKF_LEFTBUTTONDOWN)
-		{
-			painter.begin(this);    // start drawing
+	painter.begin(this);
 
-			painter.setPen(Qt::blue);
-			painter.drawLine(posX, posY, posX+10, posY+10);  // line
-			painter.drawRect(120, 10, 80, 80);  // rectangle
-			QRectF rect(230.0, 10.0, 80.0, 80.0);
-			pen.setWidth(4);
-			painter.setPen(pen);
-			painter.drawRoundedRect(rect, 20, 20);  // rounded rectangle
-			painter.end();      // close Paint device
-			update();
-		}
-	}
+	painter.drawLine(80, 80, 100, 40);
+	painter.end();
 }
 
 void QTProject::DrawLine(){
 	QPainter painter;
-	if (brushcount > 0)
-	{
-		if (MOUSEEVENTF_LEFTDOWN)
-		{
+	if (brushcount > 0) {
+		if (MOUSEEVENTF_LEFTDOWN) {
 			QPen pen(Qt::black);
 			painter.begin(this);
 			posX = QCursor::pos().x();
@@ -121,12 +129,10 @@ void QTProject::version(){
 }
 
 void QTProject::undo(){
-	if (undostack.empty())
-	{
+	if (undostack.empty()) {
 		QMessageBox::information(this, "none", "can't undo");
 	}
-	else
-	{
+	else {
 		ui.pictureDraw->setPixmap(undostack.top());
 		redostack.push(undostack.top());
 		undostack.pop();
@@ -134,12 +140,10 @@ void QTProject::undo(){
 }
 
 void QTProject::redo(){
-	if (redostack.empty())
-	{
+	if (redostack.empty()) {
 		QMessageBox::information(this, "none", "can't redo");
 	}
-	else
-	{
+	else {
 		ui.pictureDraw->setPixmap(redostack.top());
 		undostack.push(redostack.top());
 		redostack.pop();

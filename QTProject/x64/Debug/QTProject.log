@@ -1,10 +1,2 @@
-﻿  Reading Qt configuration (D:\QT\5.9.9\msvc2017_64\bin\qmake.exe)
-  uic QTProject.ui
-  rcc QTProject.qrc
-  moc QTProject.h
-   RCC: Warning: No resources in 'C:\Users\lsh95\source\repos\QTProject\QTProject\QTProject.qrc'.
-  main.cpp
-  QTProject.cpp
-  qrc_QTProject.cpp
-  moc_QTProject.cpp
-  QTProject.vcxproj -> C:\Users\lsh95\source\repos\QTProject\x64\Debug\QTProject.exe
+﻿  QTProject.cpp
+  QTProject.vcxproj -> C:\Users\lsh95\Documents\GitHub\QTProjectTest\x64\Debug\QTProject.exe

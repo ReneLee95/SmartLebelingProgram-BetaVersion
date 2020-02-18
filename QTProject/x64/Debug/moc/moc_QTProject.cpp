@@ -22,7 +22,7 @@ QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_QTProject_t {
     QByteArrayData data[16];
-    char stringdata0[153];
+    char stringdata0[150];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -32,24 +32,24 @@ struct qt_meta_stringdata_QTProject_t {
 static const qt_meta_stringdata_QTProject_t qt_meta_stringdata_QTProject = {
     {
 QT_MOC_LITERAL(0, 0, 9), // "QTProject"
-QT_MOC_LITERAL(1, 10, 12), // "brushClicked"
-QT_MOC_LITERAL(2, 23, 0), // ""
-QT_MOC_LITERAL(3, 24, 12), // "closeClicked"
-QT_MOC_LITERAL(4, 37, 12), // "imageCapture"
-QT_MOC_LITERAL(5, 50, 11), // "imageSaveAs"
-QT_MOC_LITERAL(6, 62, 7), // "Newfile"
-QT_MOC_LITERAL(7, 70, 7), // "version"
-QT_MOC_LITERAL(8, 78, 10), // "paintEvent"
-QT_MOC_LITERAL(9, 89, 12), // "QPaintEvent*"
-QT_MOC_LITERAL(10, 102, 5), // "event"
-QT_MOC_LITERAL(11, 108, 4), // "undo"
-QT_MOC_LITERAL(12, 113, 4), // "redo"
-QT_MOC_LITERAL(13, 118, 10), // "Screenshot"
-QT_MOC_LITERAL(14, 129, 8), // "DrawLine"
-QT_MOC_LITERAL(15, 138, 14) // "brushcountfunc"
+QT_MOC_LITERAL(1, 10, 9), // "imageOpen"
+QT_MOC_LITERAL(2, 20, 0), // ""
+QT_MOC_LITERAL(3, 21, 12), // "closeClicked"
+QT_MOC_LITERAL(4, 34, 12), // "imageCapture"
+QT_MOC_LITERAL(5, 47, 11), // "imageSaveAs"
+QT_MOC_LITERAL(6, 59, 7), // "Newfile"
+QT_MOC_LITERAL(7, 67, 7), // "version"
+QT_MOC_LITERAL(8, 75, 10), // "paintEvent"
+QT_MOC_LITERAL(9, 86, 12), // "QPaintEvent*"
+QT_MOC_LITERAL(10, 99, 5), // "event"
+QT_MOC_LITERAL(11, 105, 4), // "undo"
+QT_MOC_LITERAL(12, 110, 4), // "redo"
+QT_MOC_LITERAL(13, 115, 10), // "Screenshot"
+QT_MOC_LITERAL(14, 126, 8), // "DrawLine"
+QT_MOC_LITERAL(15, 135, 14) // "brushcountfunc"
 
     },
-    "QTProject\0brushClicked\0\0closeClicked\0"
+    "QTProject\0imageOpen\0\0closeClicked\0"
     "imageCapture\0imageSaveAs\0Newfile\0"
     "version\0paintEvent\0QPaintEvent*\0event\0"
     "undo\0redo\0Screenshot\0DrawLine\0"
@@ -107,7 +107,7 @@ void QTProject::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
         QTProject *_t = static_cast<QTProject *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
-        case 0: _t->brushClicked(); break;
+        case 0: _t->imageOpen(); break;
         case 1: _t->closeClicked(); break;
         case 2: _t->imageCapture(); break;
         case 3: _t->imageSaveAs(); break;
