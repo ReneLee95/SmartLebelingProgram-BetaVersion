@@ -14,57 +14,143 @@ QTProject::QTProject(QWidget *parent)
 	connect(ui.actionUndo, SIGNAL(triggered()), this, SLOT(undo()));
 	connect(ui.actionRedo, SIGNAL(triggered()), this, SLOT(redo()));
 	connect(ui.actionScreenShot, SIGNAL(triggered()), this, SLOT(Screenshot()));
-	connect(ui.pictureDraw, SIGNAL(Mouse_Pressed()), this, SLOT(DrawLine()));
+	connect(ui.LineButton, SIGNAL(clicked()), this, SLOT(DrawLine()));
 	connect(ui.PaintButton, SIGNAL(clicked()), this, SLOT(brushcountfunc()));
-	
-	QMouseEvent* ev;
-	posX = this->geometry().x();
-	posY = this->geometry().y();
-	absX = this->geometry().x();
-	absY = this->geometry().y();
-}
-/*
-void QTProject::mouseMoveEvent(QMouseEvent* mouse) {
-	if (this->isMaximized() == true) return;
-
-	if (mouse->button() == Qt::RightButton) return;
+	connect(ui.FontsizeUp, SIGNAL(clicked()), this, SLOT(fontsizeup()));
+	connect(ui.FontsizeDown, SIGNAL(clicked()), this, SLOT(fontsizedown()));
+	connect(ui.penBlack, SIGNAL(clicked()), this, SLOT(colorBlackselect()));
+	connect(ui.penBlue, SIGNAL(clicked()), this, SLOT(colorBlueselect()));
+	connect(ui.penRed, SIGNAL(clicked()), this, SLOT(colorRedselect()));
+	connect(ui.RectangleButton, SIGNAL(clicked()), this, SLOT(DrawRect()));
+	connect(ui.CircleButton, SIGNAL(clicked()), this, SLOT(DrawCir()));
 
 	posX = QCursor::pos().x();
 	posY = QCursor::pos().y();
+	absX = QCursor::pos().x();
+	absY = QCursor::pos().y();
+	
+	mouse_state = false;
+	brushcount = 0;
+	Pensize = 20;
+	QBrush Pencolor = Qt::black;
 
-	if (oneclick == 0) {
-		absX = mouse->pos().x() + 7;
-		absY = mouse->pos().y() + 7;
-		oneclick++;
+	ui.PensizeLabel->setText(QString::number(Pensize));
+}
+
+void QTProject::colorBlackselect() {
+	Pencolor = Qt::black;
+}
+
+void QTProject::colorBlueselect() {
+	Pencolor = Qt::blue;
+}
+
+void QTProject::colorRedselect() {
+	Pencolor = Qt::red;
+}
+
+void QTProject::fontsizeup() {
+	Pensize++;
+	ui.PensizeLabel->setText(QString::number(Pensize));
+}
+
+void QTProject::fontsizedown() {
+	Pensize--;
+	ui.PensizeLabel->setText(QString::number(Pensize));
+}
+
+void QTProject::mousePressEvent(QMouseEvent* mouse) {
+	mouse_state = true;
+}
+
+void QTProject::mouseReleaseEvent(QMouseEvent* mouse) {
+	mouse_state = false;
+}
+
+void QTProject::mouseMoveEvent(QMouseEvent* mouse) {
+	ui.pictureDraw->setMouseTracking(true);
+	QPainter painter;
+	QPoint position = mouse->pos();
+	posX = absX;
+	posY = absY;
+	absX = position.x();
+	absY = position.y();
+
+	if (mouse_state) {
+		//update();
 	}
-	this->move(posX - absX, posY - absY);
+	switch (brushcount) {
+	case 1:
+		update(posX, posY, Pensize, Pensize);
+		break;
+	case 2:
+		update();
+		break;
+	case 3:
+		update();
+		break;
+	default:
+		break;
+	}
 }
 
-void QTProject::mouseRelease(QMouseEvent*) {
-	oneclick = 0;
+void QTProject::paintEvent(QPaintEvent* event) {
+	Q_UNUSED(event);
+	QPainter painter(this);
+	switch (brushcount) {
+	case 1 :
+		painter.begin(this);
+		painter.setPen(QPen(Pencolor, 100, Qt::SolidLine, Qt::RoundCap));
+		painter.drawLine(posX, posY, absX, absY);
+		painter.end();
+		break;
+	case 2:
+		painter.begin(this);
+		painter.setPen(QPen(Pencolor, 10, Qt::SolidLine, Qt::RoundCap));
+		painter.drawRect(posX, posY, 80, 60);
+		painter.end();
+		break;
+	case 3:
+		painter.begin(this);
+		painter.setPen(QPen(Pencolor, 10, Qt::SolidLine, Qt::RoundCap));
+		painter.drawEllipse(posX, posY, 80, 60);
+		painter.end();
+		break;
+	default:
+		break;
+	}
 }
-*/
-void QTProject::imageOpen(){
+
+void QTProject::imageOpen() {
+	mutex.lock();
+	QPixmap buffer;
 	QString filePath = imgLoad.getOpenFileName(this, "Load Image", "", "Image Files(*.png *.jpg *.bmp *.raw)");
-
 	QString fileName = filePath.section("/", -1);
+
 	ui.FileLabel->setText(fileName);
 	img.load(filePath);
+	buffer = QPixmap::fromImage(img);
 
-	ui.pictureDraw->setPixmap(img);
+	ui.pictureDraw->setPixmap(buffer);
+	
 	int w = img.width();
 	ui.WidthLabel->setText(QString::number(w));
+	
 	int h = img.height();
 	ui.HeightLabel->setText(QString::number(h));
-	undostack.push(img);
+	
+	undostack.push(buffer);
+	
 	ui.pictureDraw->setScaledContents(true);
+	mutex.unlock();
 }
 
 void QTProject::brushcountfunc(){
-	brushcount = 1;
+	brushcount = 0;
 }
 
 void QTProject::closeClicked(){
+	mutex.lock();
 	QMessageBox messagebox;
 	messagebox.setText("Do you want to exit?");
 	messagebox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
@@ -74,49 +160,52 @@ void QTProject::closeClicked(){
 	{
 		this->close();
 	}
+	mutex.unlock();
 }
 
-void QTProject::imageCapture(){
+void QTProject::imageCapture() {
 
 }
 
-void QTProject::paintEvent(QPaintEvent* event){
-	Q_UNUSED(event);
-	QPainter painter;
-	QPen pen(Qt::black);
-	posX = QCursor::pos().x();
-	posY = QCursor::pos().y();
-	painter.begin(this);
-
-	painter.drawLine(80, 80, 100, 40);
-	painter.end();
+void QTProject::DrawLine() {
+	brushcount = 1;
 }
 
-void QTProject::DrawLine(){
-	QPainter painter;
-	if (brushcount > 0) {
-		if (MOUSEEVENTF_LEFTDOWN) {
-			QPen pen(Qt::black);
-			painter.begin(this);
-			posX = QCursor::pos().x();
-			posY = QCursor::pos().y();
-			absX = posX - absX;
-			absY = posY - absY;
-			painter.drawLine(0, 0, 50, 50);
-			painter.end();
-		}
-	}
+void QTProject::DrawRect() {
+	brushcount = 2;
+}
+
+void QTProject::DrawCir() {
+	brushcount = 3;
+}
+
+void QTProject::drawEvent(QMouseEvent* mouse) {
+/*	if (mouse_state) {
+		posX = absX;
+		posY = absY;
+
+		absX = mouse->x();
+		absY = mouse->y();
+
+		QPainter painter(this);
+		painter.setPen(QPen(Qt::black, 12, Qt::SolidLine, Qt::RoundCap));
+		painter.drawLine(posX, posY, absX, absY);
+		update();
+	}*/
 }
 
 void QTProject::imageSaveAs(){
+	mutex.lock();
+	QPixmap buffer;
 	QString filePath = imgSave.getSaveFileName(this, "Save Image", "", "Image Files(*.png *.jpg *.bmp *.raw)");
 	QString fileName = filePath.section("/", -1);
 //	image = imwrite("copy image",image);
 	img.save(filePath);
-
-	ui.pictureDraw->setPixmap(img);
-	undostack.push(img);
+	buffer = QPixmap::fromImage(img);
+	ui.pictureDraw->setPixmap(buffer);
+	undostack.push(buffer);
 	ui.pictureDraw->setScaledContents(true);
+	mutex.unlock();
 }
 
 void QTProject::Newfile(){
@@ -150,13 +239,14 @@ void QTProject::redo(){
 	}
 }
 
-void QTProject::Screenshot(){
+void QTProject::Screenshot() {
+	QPixmap buffer;
 	QString filePath = imgSave.getSaveFileName(this, "Screenshot Image", "", "Image Files(*.png *.jpg *.bmp *.raw)");
 	QString fileName = filePath.section("/", -1);
 
 	img.save(filePath);
-
-	ui.pictureDraw->setPixmap(img);
-	undostack.push(img);
+	buffer = QPixmap::fromImage(img);
+	ui.pictureDraw->setPixmap(buffer);
+	undostack.push(buffer);
 	ui.pictureDraw->setScaledContents(true);
 }

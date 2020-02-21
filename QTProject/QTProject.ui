@@ -14,7 +14,7 @@
    <bool>true</bool>
   </property>
   <property name="tabletTracking">
-   <bool>false</bool>
+   <bool>true</bool>
   </property>
   <property name="windowTitle">
    <string>QTProject</string>
@@ -24,6 +24,9 @@
     <normaloff>../../../../.designer/White.png</normaloff>../../../../.designer/White.png</iconset>
   </property>
   <property name="documentMode">
+   <bool>true</bool>
+  </property>
+  <property name="unifiedTitleAndToolBarOnMac">
    <bool>false</bool>
   </property>
   <widget class="QWidget" name="centralWidget">
@@ -35,8 +38,8 @@
      <rect>
       <x>20</x>
       <y>20</y>
-      <width>451</width>
-      <height>371</height>
+      <width>521</width>
+      <height>411</height>
      </rect>
     </property>
     <property name="cursor">
@@ -46,6 +49,12 @@
      <bool>false</bool>
     </property>
     <property name="tabletTracking">
+     <bool>true</bool>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::ClickFocus</enum>
+    </property>
+    <property name="autoFillBackground">
      <bool>true</bool>
     </property>
     <property name="frameShape">
@@ -196,7 +205,7 @@
     <property name="geometry">
      <rect>
       <x>970</x>
-      <y>370</y>
+      <y>550</y>
       <width>301</width>
       <height>181</height>
      </rect>
@@ -349,30 +358,171 @@ p, li { white-space: pre-wrap; }
      </property>
     </widget>
    </widget>
-   <widget class="QLabel" name="testlabel">
+   <widget class="QLabel" name="PensizeLabel">
     <property name="geometry">
      <rect>
-      <x>990</x>
-      <y>590</y>
-      <width>101</width>
+      <x>1180</x>
+      <y>380</y>
+      <width>71</width>
       <height>31</height>
      </rect>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string/>
     </property>
    </widget>
-   <widget class="QLabel" name="testlabel2">
+   <widget class="QTextEdit" name="textEdit_4">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
-      <x>990</x>
-      <y>630</y>
-      <width>101</width>
+      <x>1090</x>
+      <y>380</y>
+      <width>91</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::NoFrame</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Sunken</enum>
+    </property>
+    <property name="lineWidth">
+     <number>0</number>
+    </property>
+    <property name="lineWrapMode">
+     <enum>QTextEdit::NoWrap</enum>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
+    <property name="html">
+     <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Gulim'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Font size :&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="acceptRichText">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="FontsizeUp">
+    <property name="geometry">
+     <rect>
+      <x>1160</x>
+      <y>460</y>
+      <width>31</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>↑</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="FontsizeDown">
+    <property name="geometry">
+     <rect>
+      <x>1200</x>
+      <y>460</y>
+      <width>31</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>↓</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="penBlack">
+    <property name="geometry">
+     <rect>
+      <x>1090</x>
+      <y>500</y>
+      <width>51</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Black</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="penRed">
+    <property name="geometry">
+     <rect>
+      <x>1150</x>
+      <y>500</y>
+      <width>51</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Red</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="penBlue">
+    <property name="geometry">
+     <rect>
+      <x>1210</x>
+      <y>500</y>
+      <width>51</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Blue</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="Pencolor">
+    <property name="geometry">
+     <rect>
+      <x>1180</x>
+      <y>410</y>
+      <width>71</width>
       <height>31</height>
      </rect>
     </property>
     <property name="text">
-     <string>TextLabel</string>
+     <string/>
+    </property>
+   </widget>
+   <widget class="QTextEdit" name="textEdit_5">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>1090</x>
+      <y>410</y>
+      <width>91</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::NoFrame</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Sunken</enum>
+    </property>
+    <property name="lineWidth">
+     <number>0</number>
+    </property>
+    <property name="lineWrapMode">
+     <enum>QTextEdit::NoWrap</enum>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
+    <property name="html">
+     <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Gulim'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Font &lt;/span&gt;color&lt;span style=&quot; font-size:10pt;&quot;&gt; :&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="acceptRichText">
+     <bool>true</bool>
     </property>
    </widget>
   </widget>
@@ -387,6 +537,15 @@ p, li { white-space: pre-wrap; }
      <width>1292</width>
      <height>26</height>
     </rect>
+   </property>
+   <property name="autoFillBackground">
+    <bool>true</bool>
+   </property>
+   <property name="defaultUp">
+    <bool>false</bool>
+   </property>
+   <property name="nativeMenuBar">
+    <bool>true</bool>
    </property>
    <widget class="QMenu" name="menuQTProject">
     <property name="title">

@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_QTProject_t {
-    QByteArrayData data[16];
-    char stringdata0[150];
+    QByteArrayData data[20];
+    char stringdata0[209];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -39,21 +39,26 @@ QT_MOC_LITERAL(4, 34, 12), // "imageCapture"
 QT_MOC_LITERAL(5, 47, 11), // "imageSaveAs"
 QT_MOC_LITERAL(6, 59, 7), // "Newfile"
 QT_MOC_LITERAL(7, 67, 7), // "version"
-QT_MOC_LITERAL(8, 75, 10), // "paintEvent"
-QT_MOC_LITERAL(9, 86, 12), // "QPaintEvent*"
-QT_MOC_LITERAL(10, 99, 5), // "event"
-QT_MOC_LITERAL(11, 105, 4), // "undo"
-QT_MOC_LITERAL(12, 110, 4), // "redo"
-QT_MOC_LITERAL(13, 115, 10), // "Screenshot"
-QT_MOC_LITERAL(14, 126, 8), // "DrawLine"
-QT_MOC_LITERAL(15, 135, 14) // "brushcountfunc"
+QT_MOC_LITERAL(8, 75, 4), // "undo"
+QT_MOC_LITERAL(9, 80, 4), // "redo"
+QT_MOC_LITERAL(10, 85, 10), // "Screenshot"
+QT_MOC_LITERAL(11, 96, 8), // "DrawLine"
+QT_MOC_LITERAL(12, 105, 14), // "brushcountfunc"
+QT_MOC_LITERAL(13, 120, 10), // "fontsizeup"
+QT_MOC_LITERAL(14, 131, 12), // "fontsizedown"
+QT_MOC_LITERAL(15, 144, 14), // "colorRedselect"
+QT_MOC_LITERAL(16, 159, 15), // "colorBlueselect"
+QT_MOC_LITERAL(17, 175, 16), // "colorBlackselect"
+QT_MOC_LITERAL(18, 192, 8), // "DrawRect"
+QT_MOC_LITERAL(19, 201, 7) // "DrawCir"
 
     },
     "QTProject\0imageOpen\0\0closeClicked\0"
     "imageCapture\0imageSaveAs\0Newfile\0"
-    "version\0paintEvent\0QPaintEvent*\0event\0"
-    "undo\0redo\0Screenshot\0DrawLine\0"
-    "brushcountfunc"
+    "version\0undo\0redo\0Screenshot\0DrawLine\0"
+    "brushcountfunc\0fontsizeup\0fontsizedown\0"
+    "colorRedselect\0colorBlueselect\0"
+    "colorBlackselect\0DrawRect\0DrawCir"
 };
 #undef QT_MOC_LITERAL
 
@@ -63,7 +68,7 @@ static const uint qt_meta_data_QTProject[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      12,   14, // methods
+      18,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -71,18 +76,24 @@ static const uint qt_meta_data_QTProject[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,   74,    2, 0x0a /* Public */,
-       3,    0,   75,    2, 0x0a /* Public */,
-       4,    0,   76,    2, 0x0a /* Public */,
-       5,    0,   77,    2, 0x0a /* Public */,
-       6,    0,   78,    2, 0x0a /* Public */,
-       7,    0,   79,    2, 0x0a /* Public */,
-       8,    1,   80,    2, 0x0a /* Public */,
-      11,    0,   83,    2, 0x0a /* Public */,
-      12,    0,   84,    2, 0x0a /* Public */,
-      13,    0,   85,    2, 0x0a /* Public */,
-      14,    0,   86,    2, 0x0a /* Public */,
-      15,    0,   87,    2, 0x0a /* Public */,
+       1,    0,  104,    2, 0x0a /* Public */,
+       3,    0,  105,    2, 0x0a /* Public */,
+       4,    0,  106,    2, 0x0a /* Public */,
+       5,    0,  107,    2, 0x0a /* Public */,
+       6,    0,  108,    2, 0x0a /* Public */,
+       7,    0,  109,    2, 0x0a /* Public */,
+       8,    0,  110,    2, 0x0a /* Public */,
+       9,    0,  111,    2, 0x0a /* Public */,
+      10,    0,  112,    2, 0x0a /* Public */,
+      11,    0,  113,    2, 0x0a /* Public */,
+      12,    0,  114,    2, 0x0a /* Public */,
+      13,    0,  115,    2, 0x0a /* Public */,
+      14,    0,  116,    2, 0x0a /* Public */,
+      15,    0,  117,    2, 0x0a /* Public */,
+      16,    0,  118,    2, 0x0a /* Public */,
+      17,    0,  119,    2, 0x0a /* Public */,
+      18,    0,  120,    2, 0x0a /* Public */,
+      19,    0,  121,    2, 0x0a /* Public */,
 
  // slots: parameters
     QMetaType::Void,
@@ -91,7 +102,13 @@ static const uint qt_meta_data_QTProject[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void, 0x80000000 | 9,   10,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
@@ -113,15 +130,22 @@ void QTProject::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
         case 3: _t->imageSaveAs(); break;
         case 4: _t->Newfile(); break;
         case 5: _t->version(); break;
-        case 6: _t->paintEvent((*reinterpret_cast< QPaintEvent*(*)>(_a[1]))); break;
-        case 7: _t->undo(); break;
-        case 8: _t->redo(); break;
-        case 9: _t->Screenshot(); break;
-        case 10: _t->DrawLine(); break;
-        case 11: _t->brushcountfunc(); break;
+        case 6: _t->undo(); break;
+        case 7: _t->redo(); break;
+        case 8: _t->Screenshot(); break;
+        case 9: _t->DrawLine(); break;
+        case 10: _t->brushcountfunc(); break;
+        case 11: _t->fontsizeup(); break;
+        case 12: _t->fontsizedown(); break;
+        case 13: _t->colorRedselect(); break;
+        case 14: _t->colorBlueselect(); break;
+        case 15: _t->colorBlackselect(); break;
+        case 16: _t->DrawRect(); break;
+        case 17: _t->DrawCir(); break;
         default: ;
         }
     }
+    Q_UNUSED(_a);
 }
 
 const QMetaObject QTProject::staticMetaObject = {
@@ -149,13 +173,13 @@ int QTProject::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 12)
+        if (_id < 18)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 12;
+        _id -= 18;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 12)
+        if (_id < 18)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 12;
+        _id -= 18;
     }
     return _id;
 }

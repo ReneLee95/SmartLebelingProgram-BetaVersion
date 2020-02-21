@@ -62,8 +62,15 @@ public:
     QTextEdit *textEdit_2;
     QTextEdit *textEdit_3;
     QLabel *FileLabel;
-    QLabel *testlabel;
-    QLabel *testlabel2;
+    QLabel *PensizeLabel;
+    QTextEdit *textEdit_4;
+    QPushButton *FontsizeUp;
+    QPushButton *FontsizeDown;
+    QPushButton *penBlack;
+    QPushButton *penRed;
+    QPushButton *penBlue;
+    QLabel *Pencolor;
+    QTextEdit *textEdit_5;
     QMenuBar *menuBar;
     QMenu *menuQTProject;
     QMenu *menuOption;
@@ -77,11 +84,12 @@ public:
             QTProjectClass->setObjectName(QStringLiteral("QTProjectClass"));
         QTProjectClass->resize(1292, 862);
         QTProjectClass->setMouseTracking(true);
-        QTProjectClass->setTabletTracking(false);
+        QTProjectClass->setTabletTracking(true);
         QIcon icon;
         icon.addFile(QStringLiteral("../../../../.designer/White.png"), QSize(), QIcon::Normal, QIcon::Off);
         QTProjectClass->setWindowIcon(icon);
-        QTProjectClass->setDocumentMode(false);
+        QTProjectClass->setDocumentMode(true);
+        QTProjectClass->setUnifiedTitleAndToolBarOnMac(false);
         actionOpen = new QAction(QTProjectClass);
         actionOpen->setObjectName(QStringLiteral("actionOpen"));
         actionSave = new QAction(QTProjectClass);
@@ -121,6 +129,8 @@ public:
         pictureDraw->setCursor(QCursor(Qt::CrossCursor));
         pictureDraw->setMouseTracking(false);
         pictureDraw->setTabletTracking(true);
+        pictureDraw->setFocusPolicy(Qt::ClickFocus);
+        pictureDraw->setAutoFillBackground(true);
         pictureDraw->setFrameShape(QFrame::Box);
         pictureDraw->setScaledContents(true);
         PaintButton = new QPushButton(centralWidget);
@@ -159,7 +169,7 @@ public:
         TextButton->setCheckable(true);
         groupBox = new QGroupBox(centralWidget);
         groupBox->setObjectName(QStringLiteral("groupBox"));
-        groupBox->setGeometry(QRect(970, 370, 301, 181));
+        groupBox->setGeometry(QRect(970, 550, 301, 181));
         WidthLabel = new QLabel(groupBox);
         WidthLabel->setObjectName(QStringLiteral("WidthLabel"));
         WidthLabel->setGeometry(QRect(90, 80, 191, 31));
@@ -196,17 +206,55 @@ public:
         FileLabel = new QLabel(groupBox);
         FileLabel->setObjectName(QStringLiteral("FileLabel"));
         FileLabel->setGeometry(QRect(90, 40, 191, 31));
-        testlabel = new QLabel(centralWidget);
-        testlabel->setObjectName(QStringLiteral("testlabel"));
-        testlabel->setGeometry(QRect(990, 590, 101, 31));
-        testlabel2 = new QLabel(centralWidget);
-        testlabel2->setObjectName(QStringLiteral("testlabel2"));
-        testlabel2->setGeometry(QRect(990, 630, 101, 31));
+        PensizeLabel = new QLabel(centralWidget);
+        PensizeLabel->setObjectName(QStringLiteral("PensizeLabel"));
+        PensizeLabel->setGeometry(QRect(1180, 380, 71, 31));
+        textEdit_4 = new QTextEdit(centralWidget);
+        textEdit_4->setObjectName(QStringLiteral("textEdit_4"));
+        textEdit_4->setEnabled(false);
+        textEdit_4->setGeometry(QRect(1090, 380, 91, 31));
+        textEdit_4->setFrameShape(QFrame::NoFrame);
+        textEdit_4->setFrameShadow(QFrame::Sunken);
+        textEdit_4->setLineWidth(0);
+        textEdit_4->setLineWrapMode(QTextEdit::NoWrap);
+        textEdit_4->setReadOnly(true);
+        textEdit_4->setAcceptRichText(true);
+        FontsizeUp = new QPushButton(centralWidget);
+        FontsizeUp->setObjectName(QStringLiteral("FontsizeUp"));
+        FontsizeUp->setGeometry(QRect(1160, 460, 31, 28));
+        FontsizeDown = new QPushButton(centralWidget);
+        FontsizeDown->setObjectName(QStringLiteral("FontsizeDown"));
+        FontsizeDown->setGeometry(QRect(1200, 460, 31, 28));
+        penBlack = new QPushButton(centralWidget);
+        penBlack->setObjectName(QStringLiteral("penBlack"));
+        penBlack->setGeometry(QRect(1090, 500, 51, 28));
+        penRed = new QPushButton(centralWidget);
+        penRed->setObjectName(QStringLiteral("penRed"));
+        penRed->setGeometry(QRect(1150, 500, 51, 28));
+        penBlue = new QPushButton(centralWidget);
+        penBlue->setObjectName(QStringLiteral("penBlue"));
+        penBlue->setGeometry(QRect(1210, 500, 51, 28));
+        Pencolor = new QLabel(centralWidget);
+        Pencolor->setObjectName(QStringLiteral("Pencolor"));
+        Pencolor->setGeometry(QRect(1180, 410, 71, 31));
+        textEdit_5 = new QTextEdit(centralWidget);
+        textEdit_5->setObjectName(QStringLiteral("textEdit_5"));
+        textEdit_5->setEnabled(false);
+        textEdit_5->setGeometry(QRect(1090, 410, 91, 31));
+        textEdit_5->setFrameShape(QFrame::NoFrame);
+        textEdit_5->setFrameShadow(QFrame::Sunken);
+        textEdit_5->setLineWidth(0);
+        textEdit_5->setLineWrapMode(QTextEdit::NoWrap);
+        textEdit_5->setReadOnly(true);
+        textEdit_5->setAcceptRichText(true);
         QTProjectClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(QTProjectClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
         menuBar->setEnabled(true);
         menuBar->setGeometry(QRect(0, 0, 1292, 26));
+        menuBar->setAutoFillBackground(true);
+        menuBar->setDefaultUp(false);
+        menuBar->setNativeMenuBar(true);
         menuQTProject = new QMenu(menuBar);
         menuQTProject->setObjectName(QStringLiteral("menuQTProject"));
         menuOption = new QMenu(menuBar);
@@ -307,8 +355,23 @@ public:
 "</style></head><body style=\" font-family:'Gulim'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:10pt;\">File :</span></p></body></html>", Q_NULLPTR));
         FileLabel->setText(QString());
-        testlabel->setText(QApplication::translate("QTProjectClass", "TextLabel", Q_NULLPTR));
-        testlabel2->setText(QApplication::translate("QTProjectClass", "TextLabel", Q_NULLPTR));
+        PensizeLabel->setText(QString());
+        textEdit_4->setHtml(QApplication::translate("QTProjectClass", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'Gulim'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:10pt;\">Font size :</span></p></body></html>", Q_NULLPTR));
+        FontsizeUp->setText(QApplication::translate("QTProjectClass", "\342\206\221", Q_NULLPTR));
+        FontsizeDown->setText(QApplication::translate("QTProjectClass", "\342\206\223", Q_NULLPTR));
+        penBlack->setText(QApplication::translate("QTProjectClass", "Black", Q_NULLPTR));
+        penRed->setText(QApplication::translate("QTProjectClass", "Red", Q_NULLPTR));
+        penBlue->setText(QApplication::translate("QTProjectClass", "Blue", Q_NULLPTR));
+        Pencolor->setText(QString());
+        textEdit_5->setHtml(QApplication::translate("QTProjectClass", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'Gulim'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:10pt;\">Font </span>color<span style=\" font-size:10pt;\"> :</span></p></body></html>", Q_NULLPTR));
         menuQTProject->setTitle(QApplication::translate("QTProjectClass", "File", Q_NULLPTR));
         menuOption->setTitle(QApplication::translate("QTProjectClass", "Edit", Q_NULLPTR));
         menuHelp->setTitle(QApplication::translate("QTProjectClass", "Help", Q_NULLPTR));
