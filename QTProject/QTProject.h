@@ -7,79 +7,127 @@
 //#include <boost/python.hpp>
 //#include <boost/python/numpy.hpp>
 #include <iostream>
-#include <conio.h>
 #include <stack>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/qpushbutton.h>
-#include <QtCore/qcoreapplication.h>
-#include <opencv2/opencv.hpp>
-#include <opencv2/core/core.hpp>
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
-#include <opencv2/core/types_c.h>
-#include <opencv2/core/core.hpp>
-#include <QToolBox>
-#include <qapplication.h>
+#include "opencv2/opencv.hpp"
+#include "opencv2/core.hpp"
+#include "opencv2/highgui.hpp"
+#include "opencv2/imgcodecs.hpp"
 #include <QMessageBox>
 #include <qfiledialog.h>
 #include <QImage>
 #include <QPainter>
-#include <qpainterpath.h>
-#include <qfontdialog.h>
+#include <qcolor.h>
 #include <qaction.h>
-#include <qstatusbar.h>
 #include <Qt3DInput/qmouseevent.h>
-#include <QtGui/qevent.h>
-#include <qpicture.h>
-#include <qdebug.h>
-#include <qmutex.h>
-#include <qicon.h>
+#include <qgraphicsitem.h>
+#include <qgraphicsscene.h>
+#include <qgraphicsview.h>
+#include <qgraphicsitem.h>
+#include <qgraphicsproxywidget.h>
+#include <qgraphicsgridlayout.h>
 #include <qpainter.h>
-//#include <qwidget.h>
 #include <QtWidgets/qwidget.h>
-#include <qmatrix.h>
+#include <qgraphicssceneevent.h>
 #include "ui_QTProject.h"
-#include <Windows.h>
-#include <tchar.h>
-#include <mutex>
-#include <qline.h>
+#include <qlabel.h>
 #include <vector>
-#include <QtGui/qtgui-config.h>
-#include <qslider.h>
+#include <qgridlayout.h>
+#include <qcheckbox.h>
+
 
 using namespace std;
 using namespace cv;
 //namespace py = boost::python;
 //namespace np = boost::python::numpy;
 
-
-class QTProject : public QMainWindow{
-	Q_OBJECT
-
+class EmptyItem : public QGraphicsItem {
 public:
-	QTProject(QWidget *parent = Q_NULLPTR);
-	QImage img;
+	EmptyItem(QGraphicsItem* parent = nullptr) : QGraphicsItem{ parent } {}
+	QRectF boundingRect() const override { return { 0,0,1,1 }; }
+	void paint(QPainter*, const QStyleOptionGraphicsItem*, QWidget*) override {}
+};
+
+class Scene : public QGraphicsScene {
+	Q_OBJECT
+	Q_PROPERTY(bool joinFigures READ joinFigures WRITE setJoinFigures)
+
+	bool m_joinFigures = false;
+	QGraphicsPathItem* m_item = nullptr;
+	QPainterPath m_path;
+
+	void LineDraw();
+
+	void newPoint(const QPointF& pt) {
+		if (!m_item) {
+			LineDraw();
+			m_path.moveTo(pt);
+		}
+		else {
+			m_path.lineTo(pt);
+			m_item->setPath(m_path);
+		}
+	}
+	void mousePressEvent(QGraphicsSceneMouseEvent* ev) override {
+		if (ev->buttons() != Qt::LeftButton) return;
+		if (!m_joinFigures) m_item = nullptr;
+		newPoint(ev->scenePos());
+	}
+	void mouseMoveEvent(QGraphicsSceneMouseEvent* ev) override {
+		if (ev->buttons() != Qt::LeftButton) return;
+		newPoint(ev->scenePos());
+	}
+	void mouseReleaseEvent(QGraphicsSceneMouseEvent*) override {
+		if (!m_path.isEmpty()) return;
+		delete m_item;
+		m_item = nullptr;
+	}
+public:
+	Scene(QObject* parent = nullptr) : QGraphicsScene{ parent }
+	{
+		addItem(new EmptyItem{});
+	}
+	Q_SLOT void setJoinFigures(bool j) { m_joinFigures = j; }
+	bool joinFigures() const { return m_joinFigures; }
+};
+
+class QTProject : public QMainWindow {
+	Q_OBJECT
+	QGridLayout m_layout{ this };
+	QGraphicsView m_view;
+	QCheckBox m_join{ "Join Figures (toggle with Spacebar)" };
+	QAction m_toggleJoin{ this };
+public:
+	QTProject(QWidget* parent = Q_NULLPTR);
+
+	QPixmap* pixamp;
+	QPixmap buffer;
+	QImage image;
 	QPixmap newimg;
 	QFileDialog imgLoad;
 	QFileDialog imgSave;
 	stack<QPixmap> undostack;
 	stack<QPixmap> redostack;
 	int brushcount;
-	mutex mutex;
 	int posX;
 	int posY;
 	int absX;
 	int absY;
-	int Pensize;
-	QBrush Pencolor;
+	int Colorselect;
+
+	~QTProject();
+
+signals:
+	void clicked();
 
 private:
 	Ui::QTProjectClass ui;
 	int oneclick;
 	bool mouse_state;
-	void mousePressEvent(QMouseEvent* mouse);
-	void mouseReleaseEvent(QMouseEvent* mouse);
-	void mouseMoveEvent(QMouseEvent* mouse);
+	//void mousePressEvent(QGraphicsSceneMouseEvent *mouse);
+	//void mouseReleaseEvent(QGraphicsSceneMouseEvent* mouse);
+	//void mouseMoveEvent(QGraphicsSceneMouseEvent* mouse);
 	void paintEvent(QPaintEvent* event);
 	void drawEvent(QMouseEvent* mouse);
 
@@ -102,4 +150,7 @@ public slots:
 	void colorBlackselect();
 	void DrawRect();
 	void DrawCir();
+	void Erase();
+	void Paint();
+	void newScene();
 };
