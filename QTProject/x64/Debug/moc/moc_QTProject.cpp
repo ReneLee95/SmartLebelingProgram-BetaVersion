@@ -183,9 +183,9 @@ QT_MOC_LITERAL(17, 167, 15), // "colorBlueselect"
 QT_MOC_LITERAL(18, 183, 16), // "colorBlackselect"
 QT_MOC_LITERAL(19, 200, 8), // "DrawRect"
 QT_MOC_LITERAL(20, 209, 7), // "DrawCir"
-QT_MOC_LITERAL(21, 217, 5), // "Erase"
-QT_MOC_LITERAL(22, 223, 5), // "Paint"
-QT_MOC_LITERAL(23, 229, 8) // "newScene"
+QT_MOC_LITERAL(21, 217, 5), // "Paint"
+QT_MOC_LITERAL(22, 223, 8), // "newScene"
+QT_MOC_LITERAL(23, 232, 5) // "Erase"
 
     },
     "QTProject\0clicked\0\0imageOpen\0closeClicked\0"
@@ -194,7 +194,7 @@ QT_MOC_LITERAL(23, 229, 8) // "newScene"
     "brushcountfunc\0fontsizeup\0fontsizedown\0"
     "colorRedselect\0colorBlueselect\0"
     "colorBlackselect\0DrawRect\0DrawCir\0"
-    "Erase\0Paint\0newScene"
+    "Paint\0newScene\0Erase"
 };
 #undef QT_MOC_LITERAL
 
@@ -291,9 +291,9 @@ void QTProject::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
         case 16: _t->colorBlackselect(); break;
         case 17: _t->DrawRect(); break;
         case 18: _t->DrawCir(); break;
-        case 19: _t->Erase(); break;
-        case 20: _t->Paint(); break;
-        case 21: _t->newScene(); break;
+        case 19: _t->Paint(); break;
+        case 20: _t->newScene(); break;
+        case 21: _t->Erase(); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {

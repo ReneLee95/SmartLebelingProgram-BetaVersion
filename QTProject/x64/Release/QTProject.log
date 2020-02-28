@@ -1,6 +1,5 @@
-﻿  QTProject.cpp
-QTProject.obj : error LNK2019: "void __cdecl cv::fastFree(void *)" (?fastFree@cv@@YAXPEAX@Z) 외부 기호(참조 위치: "public: __cdecl cv::Mat::~Mat(void)" (??1Mat@cv@@QEAA@XZ) 함수)에서 확인하지 못했습니다.
-QTProject.obj : error LNK2019: "public: void __cdecl cv::Mat::deallocate(void)" (?deallocate@Mat@cv@@QEAAXXZ) 외부 기호(참조 위치: "public: void __cdecl QTProject::imageOpen(void)" (?imageOpen@QTProject@@QEAAXXZ) 함수)에서 확인하지 못했습니다.
-QTProject.obj : error LNK2019: "class cv::Mat __cdecl cv::imread(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &,int)" (?imread@cv@@YA?AVMat@1@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@H@Z) 외부 기호(참조 위치: "public: void __cdecl QTProject::imageOpen(void)" (?imageOpen@QTProject@@QEAAXXZ) 함수)에서 확인하지 못했습니다.
-QTProject.obj : error LNK2019: "void __cdecl cv::imshow(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &,class cv::_InputArray const &)" (?imshow@cv@@YAXAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBV_InputArray@1@@Z) 외부 기호(참조 위치: "public: void __cdecl QTProject::imageOpen(void)" (?imageOpen@QTProject@@QEAAXXZ) 함수)에서 확인하지 못했습니다.
-C:\Users\lsh95\Documents\GitHub\QTProjectTest\x64\Release\\QTProject.exe : fatal error LNK1120: 4개의 확인할 수 없는 외부 참조입니다.
+﻿  moc QTProject.h
+  QTProject.cpp
+  main.cpp
+  moc_QTProject.cpp
+  QTProject.vcxproj -> C:\Users\lsh95\Documents\GitHub\QTProjectTest\x64\Release\QTProject.exe

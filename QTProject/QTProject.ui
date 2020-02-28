@@ -543,20 +543,20 @@ p, li { white-space: pre-wrap; }
      </rect>
     </property>
     <property name="backgroundBrush">
-     <brush brushstyle="NoBrush">
-      <color alpha="255">
+     <brush brushstyle="SolidPattern">
+      <color alpha="50">
        <red>255</red>
        <green>255</green>
-       <blue>0</blue>
+       <blue>255</blue>
       </color>
      </brush>
     </property>
     <property name="foregroundBrush">
-     <brush brushstyle="NoBrush">
-      <color alpha="255">
+     <brush brushstyle="SolidPattern">
+      <color alpha="30">
        <red>255</red>
        <green>255</green>
-       <blue>0</blue>
+       <blue>255</blue>
       </color>
      </brush>
     </property>
@@ -587,29 +587,11 @@ p, li { white-space: pre-wrap; }
    <widget class="QGraphicsView" name="testView2">
     <property name="geometry">
      <rect>
-      <x>100</x>
-      <y>140</y>
-      <width>881</width>
-      <height>441</height>
+      <x>40</x>
+      <y>10</y>
+      <width>1001</width>
+      <height>701</height>
      </rect>
-    </property>
-    <property name="backgroundBrush">
-     <brush brushstyle="NoBrush">
-      <color alpha="150">
-       <red>0</red>
-       <green>0</green>
-       <blue>0</blue>
-      </color>
-     </brush>
-    </property>
-    <property name="foregroundBrush">
-     <brush brushstyle="NoBrush">
-      <color alpha="150">
-       <red>0</red>
-       <green>0</green>
-       <blue>0</blue>
-      </color>
-     </brush>
     </property>
    </widget>
   </widget>

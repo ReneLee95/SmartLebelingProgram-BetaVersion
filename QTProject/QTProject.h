@@ -36,9 +36,9 @@
 #include <qgridlayout.h>
 #include <qcheckbox.h>
 
-
 using namespace std;
 using namespace cv;
+
 //namespace py = boost::python;
 //namespace np = boost::python::numpy;
 
@@ -84,37 +84,29 @@ class Scene : public QGraphicsScene {
 		m_item = nullptr;
 	}
 public:
-	Scene(QObject* parent = nullptr) : QGraphicsScene{ parent }
-	{
-		addItem(new EmptyItem{});
-	}
 	Q_SLOT void setJoinFigures(bool j) { m_joinFigures = j; }
 	bool joinFigures() const { return m_joinFigures; }
 };
 
 class QTProject : public QMainWindow {
 	Q_OBJECT
-	QGridLayout m_layout{ this };
-	QGraphicsView m_view;
-	QCheckBox m_join{ "Join Figures (toggle with Spacebar)" };
-	QAction m_toggleJoin{ this };
 public:
 	QTProject(QWidget* parent = Q_NULLPTR);
 
+	//stack<QGraphicsScene> undostack;
+	//stack<QGraphicsScene> redostack;
+	Scene GScene;
+	QGraphicsScene scene;
 	QPixmap* pixamp;
 	QPixmap buffer;
 	QImage image;
 	QPixmap newimg;
 	QFileDialog imgLoad;
 	QFileDialog imgSave;
-	stack<QPixmap> undostack;
-	stack<QPixmap> redostack;
-	int brushcount;
 	int posX;
 	int posY;
 	int absX;
 	int absY;
-	int Colorselect;
 
 	~QTProject();
 
@@ -125,9 +117,6 @@ private:
 	Ui::QTProjectClass ui;
 	int oneclick;
 	bool mouse_state;
-	//void mousePressEvent(QGraphicsSceneMouseEvent *mouse);
-	//void mouseReleaseEvent(QGraphicsSceneMouseEvent* mouse);
-	//void mouseMoveEvent(QGraphicsSceneMouseEvent* mouse);
 	void paintEvent(QPaintEvent* event);
 	void drawEvent(QMouseEvent* mouse);
 
@@ -150,7 +139,7 @@ public slots:
 	void colorBlackselect();
 	void DrawRect();
 	void DrawCir();
-	void Erase();
 	void Paint();
 	void newScene();
+	void Erase();
 };

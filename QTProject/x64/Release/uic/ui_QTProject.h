@@ -13,6 +13,7 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
+#include <QtWidgets/QGraphicsView>
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
@@ -47,7 +48,6 @@ public:
     QAction *actionCopy;
     QAction *actionSelect_All;
     QWidget *centralWidget;
-    QLabel *pictureDraw;
     QGroupBox *groupBox;
     QLabel *WidthLabel;
     QTextEdit *textEdit;
@@ -74,6 +74,7 @@ public:
     QRadioButton *RectangleButton;
     QRadioButton *CircleButton;
     QRadioButton *eraseButton;
+    QGraphicsView *testView;
     QMenuBar *menuBar;
     QMenu *menuQTProject;
     QMenu *menuOption;
@@ -85,7 +86,7 @@ public:
     {
         if (QTProjectClass->objectName().isEmpty())
             QTProjectClass->setObjectName(QStringLiteral("QTProjectClass"));
-        QTProjectClass->resize(1052, 862);
+        QTProjectClass->resize(1436, 848);
         QTProjectClass->setMouseTracking(true);
         QTProjectClass->setTabletTracking(true);
         QIcon icon;
@@ -125,21 +126,9 @@ public:
         actionSelect_All->setObjectName(QStringLiteral("actionSelect_All"));
         centralWidget = new QWidget(QTProjectClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
-        pictureDraw = new QLabel(centralWidget);
-        pictureDraw->setObjectName(QStringLiteral("pictureDraw"));
-        pictureDraw->setEnabled(true);
-        pictureDraw->setGeometry(QRect(20, 10, 681, 741));
-        pictureDraw->setCursor(QCursor(Qt::CrossCursor));
-        pictureDraw->setMouseTracking(true);
-        pictureDraw->setTabletTracking(true);
-        pictureDraw->setFocusPolicy(Qt::ClickFocus);
-        pictureDraw->setAcceptDrops(true);
-        pictureDraw->setAutoFillBackground(false);
-        pictureDraw->setFrameShape(QFrame::Box);
-        pictureDraw->setScaledContents(true);
         groupBox = new QGroupBox(centralWidget);
         groupBox->setObjectName(QStringLiteral("groupBox"));
-        groupBox->setGeometry(QRect(720, 560, 301, 181));
+        groupBox->setGeometry(QRect(1110, 500, 301, 181));
         WidthLabel = new QLabel(groupBox);
         WidthLabel->setObjectName(QStringLiteral("WidthLabel"));
         WidthLabel->setGeometry(QRect(90, 80, 191, 31));
@@ -178,11 +167,11 @@ public:
         FileLabel->setGeometry(QRect(90, 40, 191, 31));
         PensizeLabel = new QLabel(centralWidget);
         PensizeLabel->setObjectName(QStringLiteral("PensizeLabel"));
-        PensizeLabel->setGeometry(QRect(930, 330, 71, 31));
+        PensizeLabel->setGeometry(QRect(1320, 330, 71, 31));
         textEdit_4 = new QTextEdit(centralWidget);
         textEdit_4->setObjectName(QStringLiteral("textEdit_4"));
         textEdit_4->setEnabled(false);
-        textEdit_4->setGeometry(QRect(840, 330, 91, 31));
+        textEdit_4->setGeometry(QRect(1230, 330, 91, 31));
         textEdit_4->setFrameShape(QFrame::NoFrame);
         textEdit_4->setFrameShadow(QFrame::Sunken);
         textEdit_4->setLineWidth(0);
@@ -191,26 +180,26 @@ public:
         textEdit_4->setAcceptRichText(true);
         FontsizeUp = new QPushButton(centralWidget);
         FontsizeUp->setObjectName(QStringLiteral("FontsizeUp"));
-        FontsizeUp->setGeometry(QRect(920, 470, 31, 28));
+        FontsizeUp->setGeometry(QRect(1310, 410, 31, 28));
         FontsizeDown = new QPushButton(centralWidget);
         FontsizeDown->setObjectName(QStringLiteral("FontsizeDown"));
-        FontsizeDown->setGeometry(QRect(960, 470, 31, 28));
+        FontsizeDown->setGeometry(QRect(1350, 410, 31, 28));
         penBlack = new QPushButton(centralWidget);
         penBlack->setObjectName(QStringLiteral("penBlack"));
-        penBlack->setGeometry(QRect(850, 510, 51, 28));
+        penBlack->setGeometry(QRect(1240, 450, 51, 28));
         penRed = new QPushButton(centralWidget);
         penRed->setObjectName(QStringLiteral("penRed"));
-        penRed->setGeometry(QRect(910, 510, 51, 28));
+        penRed->setGeometry(QRect(1300, 450, 51, 28));
         penBlue = new QPushButton(centralWidget);
         penBlue->setObjectName(QStringLiteral("penBlue"));
-        penBlue->setGeometry(QRect(970, 510, 51, 28));
+        penBlue->setGeometry(QRect(1360, 450, 51, 28));
         Pencolor = new QLabel(centralWidget);
         Pencolor->setObjectName(QStringLiteral("Pencolor"));
-        Pencolor->setGeometry(QRect(930, 360, 71, 31));
+        Pencolor->setGeometry(QRect(1320, 360, 71, 31));
         textEdit_5 = new QTextEdit(centralWidget);
         textEdit_5->setObjectName(QStringLiteral("textEdit_5"));
         textEdit_5->setEnabled(false);
-        textEdit_5->setGeometry(QRect(840, 360, 91, 31));
+        textEdit_5->setGeometry(QRect(1230, 360, 91, 31));
         textEdit_5->setFrameShape(QFrame::NoFrame);
         textEdit_5->setFrameShadow(QFrame::Sunken);
         textEdit_5->setLineWidth(0);
@@ -219,13 +208,13 @@ public:
         textEdit_5->setAcceptRichText(true);
         groupBox_2 = new QGroupBox(centralWidget);
         groupBox_2->setObjectName(QStringLiteral("groupBox_2"));
-        groupBox_2->setGeometry(QRect(810, 240, 211, 161));
+        groupBox_2->setGeometry(QRect(1200, 240, 211, 161));
         groupBox_2->setCheckable(false);
         groupBox_2->setChecked(false);
         textEdit_6 = new QTextEdit(centralWidget);
         textEdit_6->setObjectName(QStringLiteral("textEdit_6"));
         textEdit_6->setEnabled(false);
-        textEdit_6->setGeometry(QRect(840, 300, 101, 31));
+        textEdit_6->setGeometry(QRect(1230, 300, 101, 31));
         textEdit_6->setFrameShape(QFrame::NoFrame);
         textEdit_6->setFrameShadow(QFrame::Sunken);
         textEdit_6->setLineWidth(0);
@@ -235,11 +224,11 @@ public:
         textEdit_6->setAcceptRichText(true);
         Penmode = new QLabel(centralWidget);
         Penmode->setObjectName(QStringLiteral("Penmode"));
-        Penmode->setGeometry(QRect(930, 300, 71, 31));
+        Penmode->setGeometry(QRect(1320, 300, 71, 31));
         groupBox_3 = new QGroupBox(centralWidget);
         groupBox_3->setObjectName(QStringLiteral("groupBox_3"));
         groupBox_3->setEnabled(true);
-        groupBox_3->setGeometry(QRect(900, 20, 121, 211));
+        groupBox_3->setGeometry(QRect(1290, 20, 121, 211));
         groupBox_3->setFlat(false);
         groupBox_3->setCheckable(false);
         groupBox_3->setChecked(false);
@@ -249,6 +238,7 @@ public:
         LineButton = new QRadioButton(groupBox_3);
         LineButton->setObjectName(QStringLiteral("LineButton"));
         LineButton->setGeometry(QRect(20, 60, 61, 19));
+        LineButton->setChecked(true);
         TextButton = new QRadioButton(groupBox_3);
         TextButton->setObjectName(QStringLiteral("TextButton"));
         TextButton->setGeometry(QRect(20, 90, 61, 19));
@@ -261,11 +251,26 @@ public:
         eraseButton = new QRadioButton(groupBox_3);
         eraseButton->setObjectName(QStringLiteral("eraseButton"));
         eraseButton->setGeometry(QRect(20, 180, 71, 19));
+        testView = new QGraphicsView(centralWidget);
+        testView->setObjectName(QStringLiteral("testView"));
+        testView->setGeometry(QRect(40, 10, 1001, 701));
+        QBrush brush(QColor(255, 255, 255, 50));
+        brush.setStyle(Qt::SolidPattern);
+        testView->setBackgroundBrush(brush);
+        QBrush brush1(QColor(255, 255, 255, 30));
+        brush1.setStyle(Qt::SolidPattern);
+        testView->setForegroundBrush(brush1);
+        testView->setSceneRect(QRectF(0, 0, 0, 0));
+        testView->setDragMode(QGraphicsView::NoDrag);
+        testView->setCacheMode(QGraphicsView::CacheNone);
+        testView->setTransformationAnchor(QGraphicsView::AnchorViewCenter);
+        testView->setResizeAnchor(QGraphicsView::NoAnchor);
+        testView->setRubberBandSelectionMode(Qt::IntersectsItemShape);
         QTProjectClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(QTProjectClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
         menuBar->setEnabled(true);
-        menuBar->setGeometry(QRect(0, 0, 1052, 26));
+        menuBar->setGeometry(QRect(0, 0, 1436, 26));
         menuBar->setAutoFillBackground(true);
         menuBar->setDefaultUp(false);
         menuBar->setNativeMenuBar(true);
@@ -341,7 +346,6 @@ public:
         actionScreenShot->setText(QApplication::translate("QTProjectClass", "Screen Shot", Q_NULLPTR));
         actionCopy->setText(QApplication::translate("QTProjectClass", "Copy", Q_NULLPTR));
         actionSelect_All->setText(QApplication::translate("QTProjectClass", "Select All", Q_NULLPTR));
-        pictureDraw->setText(QString());
         groupBox->setTitle(QApplication::translate("QTProjectClass", "Information", Q_NULLPTR));
         WidthLabel->setText(QString());
         textEdit->setHtml(QApplication::translate("QTProjectClass", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
