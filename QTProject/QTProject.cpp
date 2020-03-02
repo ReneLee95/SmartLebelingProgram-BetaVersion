@@ -8,11 +8,8 @@ int Colorselect = 1;
 QTProject::QTProject(QWidget* parent)
 	: QMainWindow(parent) {
 	ui.setupUi(this);
-	//	this->ui.testView= this->findChild<QGraphicsView*>("graphicsView");
-	//	this->m_graphScene = this->ui.testView->scene();
 	setWindowFlags(Qt::CustomizeWindowHint);
 	connect(ui.actionOpen, SIGNAL(triggered()), this, SLOT(imageOpen()));
-	connect(ui.actionScreenShot, SIGNAL(triggered()), this, SLOT(imageCapture()));
 	connect(ui.actionExit, SIGNAL(triggered()), this, SLOT(closeClicked()));
 	connect(ui.actionSaveAs, SIGNAL(triggered()), this, SLOT(imageSaveAs()));
 	connect(ui.actionNew, SIGNAL(triggered()), this, SLOT(Newfile()));
@@ -30,12 +27,6 @@ QTProject::QTProject(QWidget* parent)
 	connect(ui.RectangleButton, SIGNAL(clicked()), this, SLOT(DrawRect()));
 	connect(ui.CircleButton, SIGNAL(clicked()), this, SLOT(DrawCir()));
 	connect(ui.eraseButton, SIGNAL(clicked()), this, SLOT(Erase()));
-	connect(ui.PaintButton, SIGNAL(clicekd()), this, SLOT(Paint()));
-
-	posX = QCursor::pos().x();
-	posY = QCursor::pos().y();
-	absX = QCursor::pos().x();
-	absY = QCursor::pos().y();
 
 	mouse_state = false;
 
@@ -43,23 +34,22 @@ QTProject::QTProject(QWidget* parent)
 		ui.Pencolor->setText("Erase");
 	}
 
+	ui.Penmode->setText("Line");
 	ui.PensizeLabel->setText(QString::number(Pensize));
-	ui.testView2->ensureVisible;
-	newScene();
+	ui.testView->setScene(&GScene);
 
 }
 
-void QTProject::newScene() {
-//	if (ui.testView->scene()) ui.testView->scene();
-	ui.testView->setScene(new Scene);
-}
-
-void QTProject::Paint() {
-
+void QTProject::wheelEvent(QWheelEvent* event) {
+	if (event->delta() > 0) {
+		ui.testView->scale(1.25, 1.25);
+	}
+	else {
+		ui.testView->scale(0.8, 0.8);
+	}
 }
 
 void QTProject::Erase() {
-	Pencolor = Qt::white;
 	Colorselect = 0;
 	ui.Pencolor->setText("Erase");
 }
@@ -98,10 +88,6 @@ void QTProject::fontsizedown() {
 	ui.PensizeLabel->setText(QString::number(Pensize));
 }
 
-void QTProject::paintEvent(QPaintEvent* event) {	
-
-}
-
 void QTProject::imageOpen() {
 	//cv::Mat imgtest;
 	QString filePath = QFileDialog::getOpenFileName(this, "Open Image File", QDir::currentPath());
@@ -115,8 +101,7 @@ void QTProject::imageOpen() {
 			QMessageBox::information(this, "Image Viewer", "Error Displaying image");
 			return;
 		}
-		QGraphicsView* view = new QGraphicsView(&scene);
-		image.setPixel(50, 50, qRgba(255, 255, 255,0));
+		QGraphicsView* view = new QGraphicsView(&GScene);
 	
 		int w = image.width();
 		ui.WidthLabel->setText(QString::number(w));
@@ -126,8 +111,8 @@ void QTProject::imageOpen() {
 
 		QGraphicsPixmapItem* item = new QGraphicsPixmapItem(QPixmap::fromImage(image));
 		item->setOpacity(1);
-		scene.addItem(item);
-		ui.testView->setScene(&scene);
+		GScene.addItem(item);
+		ui.testView->setScene(&GScene);
 //		undostack.push(scene);
 	}
 	ui.FileLabel->setText(fileName);
@@ -149,11 +134,11 @@ void QTProject::brushcountfunc() {
 			QMessageBox::information(this, "Image Viewer", "Error Displaying image");
 			return;
 		}
-		QGraphicsView* view = new QGraphicsView(&scene);
+		QGraphicsView* view = new QGraphicsView(&GScene);
 		QGraphicsPixmapItem* item = new QGraphicsPixmapItem(QPixmap::fromImage(image));
 		item->setOpacity(0.7);
-		scene.addItem(item);
-		ui.testView->setScene(&scene);
+		GScene.addItem(item);
+		ui.testView->setScene(&GScene);
 //		undostack.push(scene);
 	}
 /*
@@ -174,12 +159,9 @@ void QTProject::closeClicked() {
 	}
 }
 
-void QTProject::imageCapture() {
-
-}
-
 void QTProject::DrawLine() {
 	brushcount = 1;
+	ui.Penmode->setText("Line");
 }
 
 void QTProject::DrawRect() {
@@ -190,20 +172,18 @@ void QTProject::DrawCir() {
 	brushcount = 3;
 }
 
-void QTProject::drawEvent(QMouseEvent* mouse) {
-
-}
-
 void QTProject::imageSaveAs(){
-	QPixmap buffer;
+
 	QString filePath = imgSave.getSaveFileName(this, "Save Image", "", "Image Files(*.png *.jpg *.bmp *.raw)");
 	QString fileName = filePath.section("/", -1);
-	image.save(filePath);
-	buffer = QPixmap::fromImage(image);
+
 }
 
 void QTProject::Newfile(){
-//	ui.pictureDraw->setPixmap(newimg);
+	ui.testView->scene()->clear();
+	ui.WidthLabel->setText("");
+	ui.HeightLabel->setText("");
+	ui.FileLabel->setText("");
 }
 
 void QTProject::version(){

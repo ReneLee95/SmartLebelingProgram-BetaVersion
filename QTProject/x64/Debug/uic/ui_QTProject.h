@@ -75,6 +75,7 @@ public:
     QRadioButton *CircleButton;
     QRadioButton *eraseButton;
     QGraphicsView *testView;
+    QGraphicsView *testView2;
     QMenuBar *menuBar;
     QMenu *menuQTProject;
     QMenu *menuOption;
@@ -266,6 +267,9 @@ public:
         testView->setTransformationAnchor(QGraphicsView::AnchorViewCenter);
         testView->setResizeAnchor(QGraphicsView::NoAnchor);
         testView->setRubberBandSelectionMode(Qt::IntersectsItemShape);
+        testView2 = new QGraphicsView(centralWidget);
+        testView2->setObjectName(QStringLiteral("testView2"));
+        testView2->setGeometry(QRect(40, 10, 1001, 701));
         QTProjectClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(QTProjectClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));

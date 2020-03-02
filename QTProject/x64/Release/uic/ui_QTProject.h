@@ -87,12 +87,9 @@ public:
         if (QTProjectClass->objectName().isEmpty())
             QTProjectClass->setObjectName(QStringLiteral("QTProjectClass"));
         QTProjectClass->resize(1436, 848);
-        QTProjectClass->setMouseTracking(true);
-        QTProjectClass->setTabletTracking(true);
-        QIcon icon;
-        icon.addFile(QStringLiteral("../../../../.designer/White.png"), QSize(), QIcon::Normal, QIcon::Off);
-        QTProjectClass->setWindowIcon(icon);
-        QTProjectClass->setDocumentMode(true);
+        QTProjectClass->setMouseTracking(false);
+        QTProjectClass->setTabletTracking(false);
+        QTProjectClass->setDocumentMode(false);
         QTProjectClass->setUnifiedTitleAndToolBarOnMac(false);
         actionOpen = new QAction(QTProjectClass);
         actionOpen->setObjectName(QStringLiteral("actionOpen"));
@@ -253,7 +250,12 @@ public:
         eraseButton->setGeometry(QRect(20, 180, 71, 19));
         testView = new QGraphicsView(centralWidget);
         testView->setObjectName(QStringLiteral("testView"));
-        testView->setGeometry(QRect(40, 10, 1001, 701));
+        testView->setGeometry(QRect(40, 10, 1000, 751));
+        testView->setMaximumSize(QSize(1000, 800));
+        testView->setBaseSize(QSize(1000, 800));
+        testView->setMouseTracking(false);
+        testView->setFocusPolicy(Qt::StrongFocus);
+        testView->setAcceptDrops(false);
         QBrush brush(QColor(255, 255, 255, 50));
         brush.setStyle(Qt::SolidPattern);
         testView->setBackgroundBrush(brush);
@@ -271,9 +273,9 @@ public:
         menuBar->setObjectName(QStringLiteral("menuBar"));
         menuBar->setEnabled(true);
         menuBar->setGeometry(QRect(0, 0, 1436, 26));
-        menuBar->setAutoFillBackground(true);
+        menuBar->setAutoFillBackground(false);
         menuBar->setDefaultUp(false);
-        menuBar->setNativeMenuBar(true);
+        menuBar->setNativeMenuBar(false);
         menuQTProject = new QMenu(menuBar);
         menuQTProject->setObjectName(QStringLiteral("menuQTProject"));
         menuOption = new QMenu(menuBar);
@@ -283,7 +285,7 @@ public:
         QTProjectClass->setMenuBar(menuBar);
         mainToolBar = new QToolBar(QTProjectClass);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
-        mainToolBar->setEnabled(false);
+        mainToolBar->setEnabled(true);
         QTProjectClass->addToolBar(Qt::TopToolBarArea, mainToolBar);
         statusBar = new QStatusBar(QTProjectClass);
         statusBar->setObjectName(QStringLiteral("statusBar"));
@@ -338,6 +340,9 @@ public:
         actionUser->setText(QApplication::translate("QTProjectClass", "User", Q_NULLPTR));
         actionCut->setText(QApplication::translate("QTProjectClass", "Cut", Q_NULLPTR));
         actionNew->setText(QApplication::translate("QTProjectClass", "New", Q_NULLPTR));
+#ifndef QT_NO_SHORTCUT
+        actionNew->setShortcut(QApplication::translate("QTProjectClass", "Ctrl+N", Q_NULLPTR));
+#endif // QT_NO_SHORTCUT
         actionSaveAs->setText(QApplication::translate("QTProjectClass", "Save As", Q_NULLPTR));
 #ifndef QT_NO_SHORTCUT
         actionSaveAs->setShortcut(QApplication::translate("QTProjectClass", "Ctrl+A", Q_NULLPTR));
@@ -391,6 +396,9 @@ public:
         Penmode->setText(QString());
         groupBox_3->setTitle(QApplication::translate("QTProjectClass", "SelectMode", Q_NULLPTR));
         PaintButton->setText(QApplication::translate("QTProjectClass", "Paint", Q_NULLPTR));
+#ifndef QT_NO_SHORTCUT
+        PaintButton->setShortcut(QApplication::translate("QTProjectClass", "Ctrl+P", Q_NULLPTR));
+#endif // QT_NO_SHORTCUT
         LineButton->setText(QApplication::translate("QTProjectClass", "Line", Q_NULLPTR));
         TextButton->setText(QApplication::translate("QTProjectClass", "Text", Q_NULLPTR));
         RectangleButton->setText(QApplication::translate("QTProjectClass", "Rect", Q_NULLPTR));

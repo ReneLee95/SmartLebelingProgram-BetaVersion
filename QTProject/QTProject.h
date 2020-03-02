@@ -1,46 +1,11 @@
 #pragma once
 
-//#define BOOST_PYTHON_STATIC_LIB
-//#define BOOST_LIB_NAME "boost_numpy3"
-
-//#include <boost/config/auto_link.hpp>
-//#include <boost/python.hpp>
-//#include <boost/python/numpy.hpp>
+#include "ui_QTProject.h"
 #include <iostream>
 #include <stack>
-#include <QtWidgets/QMainWindow>
-#include <QtWidgets/qpushbutton.h>
-#include "opencv2/opencv.hpp"
-#include "opencv2/core.hpp"
-#include "opencv2/highgui.hpp"
-#include "opencv2/imgcodecs.hpp"
-#include <QMessageBox>
-#include <qfiledialog.h>
-#include <QImage>
-#include <QPainter>
-#include <qcolor.h>
-#include <qaction.h>
-#include <Qt3DInput/qmouseevent.h>
-#include <qgraphicsitem.h>
-#include <qgraphicsscene.h>
-#include <qgraphicsview.h>
-#include <qgraphicsitem.h>
-#include <qgraphicsproxywidget.h>
-#include <qgraphicsgridlayout.h>
-#include <qpainter.h>
-#include <QtWidgets/qwidget.h>
-#include <qgraphicssceneevent.h>
-#include "ui_QTProject.h"
-#include <qlabel.h>
 #include <vector>
-#include <qgridlayout.h>
-#include <qcheckbox.h>
-
-using namespace std;
-using namespace cv;
-
-//namespace py = boost::python;
-//namespace np = boost::python::numpy;
+#include "Qt.h"
+#include "opencv.h"
 
 class EmptyItem : public QGraphicsItem {
 public:
@@ -96,7 +61,6 @@ public:
 	//stack<QGraphicsScene> undostack;
 	//stack<QGraphicsScene> redostack;
 	Scene GScene;
-	QGraphicsScene scene;
 	QPixmap* pixamp;
 	QPixmap buffer;
 	QImage image;
@@ -117,13 +81,11 @@ private:
 	Ui::QTProjectClass ui;
 	int oneclick;
 	bool mouse_state;
-	void paintEvent(QPaintEvent* event);
-	void drawEvent(QMouseEvent* mouse);
+	void wheelEvent(QWheelEvent* event);
 
 public slots:
 	void imageOpen();
 	void closeClicked();
-	void imageCapture();
 	void imageSaveAs();
 	void Newfile();
 	void version();
@@ -139,7 +101,5 @@ public slots:
 	void colorBlackselect();
 	void DrawRect();
 	void DrawCir();
-	void Paint();
-	void newScene();
 	void Erase();
 };
