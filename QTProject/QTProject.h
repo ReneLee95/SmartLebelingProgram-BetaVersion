@@ -7,6 +7,8 @@
 #include "Qt.h"
 #include "opencv.h"
 
+#define useMouse "result"
+
 class EmptyItem : public QGraphicsItem {
 public:
 	EmptyItem(QGraphicsItem* parent = nullptr) : QGraphicsItem{ parent } {}
@@ -53,26 +55,24 @@ public:
 	bool joinFigures() const { return m_joinFigures; }
 };
 
+
 class QTProject : public QMainWindow {
 	Q_OBJECT
 public:
 	QTProject(QWidget* parent = Q_NULLPTR);
 
+	cv::Mat firstImage, secondImage;
+	cv::Mat firstImageRst, secondImageRst;
 	//stack<QGraphicsScene> undostack;
 	//stack<QGraphicsScene> redostack;
-	Scene GScene;
+	QMessageBox messagebox;
+//	Scene GScene;
 	QPixmap* pixamp;
 	QPixmap buffer;
 	QImage image;
 	QPixmap newimg;
 	QFileDialog imgLoad;
 	QFileDialog imgSave;
-	int posX;
-	int posY;
-	int absX;
-	int absY;
-
-	~QTProject();
 
 signals:
 	void clicked();
@@ -102,4 +102,5 @@ public slots:
 	void DrawRect();
 	void DrawCir();
 	void Erase();
+	void AreaButton();
 };

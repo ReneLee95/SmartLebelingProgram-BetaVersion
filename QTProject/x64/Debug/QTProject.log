@@ -1,2 +1,5 @@
-﻿  QTProject.cpp
+﻿  moc QTProject.h
+  QTProject.cpp
+  main.cpp
+  moc_QTProject.cpp
   QTProject.vcxproj -> C:\Users\lsh95\Documents\GitHub\QTProjectTest\x64\Debug\QTProject.exe

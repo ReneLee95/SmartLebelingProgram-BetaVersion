@@ -1,14 +1,16 @@
 #include "QTProject.h"
 
 QBrush Pencolor = Qt::black;
-qreal Pensize = 5;
+qreal Pensize = 10;
 int brushcount = 0;
 int Colorselect = 1;
+int redset = 0;
+int greenset = 0;
+int blueset = 0;
 
 QTProject::QTProject(QWidget* parent)
 	: QMainWindow(parent) {
 	ui.setupUi(this);
-	setWindowFlags(Qt::CustomizeWindowHint);
 	connect(ui.actionOpen, SIGNAL(triggered()), this, SLOT(imageOpen()));
 	connect(ui.actionExit, SIGNAL(triggered()), this, SLOT(closeClicked()));
 	connect(ui.actionSaveAs, SIGNAL(triggered()), this, SLOT(imageSaveAs()));
@@ -27,17 +29,18 @@ QTProject::QTProject(QWidget* parent)
 	connect(ui.RectangleButton, SIGNAL(clicked()), this, SLOT(DrawRect()));
 	connect(ui.CircleButton, SIGNAL(clicked()), this, SLOT(DrawCir()));
 	connect(ui.eraseButton, SIGNAL(clicked()), this, SLOT(Erase()));
+	connect(ui.AreaButton, SIGNAL(clicked()), this, SLOT(AreaButton()));
 
 	mouse_state = false;
-
 	if (Colorselect == 0) {
 		ui.Pencolor->setText("Erase");
 	}
-
 	ui.Penmode->setText("Line");
 	ui.PensizeLabel->setText(QString::number(Pensize));
-	ui.testView->setScene(&GScene);
+}
 
+void QTProject::AreaButton() {
+	brushcount = -1;
 }
 
 void QTProject::wheelEvent(QWheelEvent* event) {
@@ -62,19 +65,25 @@ void Scene::LineDraw() {
 
 void QTProject::colorBlackselect() {
 	Pencolor = Qt::black;
-	Colorselect = 1;
+	redset = 0;
+	blueset = 0;
+	greenset = 0;
 	ui.Pencolor->setText("black");
 }
 
 void QTProject::colorBlueselect() {
 	Pencolor = Qt::blue;
-	Colorselect = 2;
+	blueset = 255;
+	redset = 0;
+	greenset = 0;
 	ui.Pencolor->setText("blue");
 }
 
 void QTProject::colorRedselect() {
 	Pencolor = Qt::red;
-	Colorselect = 3;
+	redset = 255;
+	blueset = 0;
+	greenset = 0;
 	ui.Pencolor->setText("red");
 }
 
@@ -88,67 +97,71 @@ void QTProject::fontsizedown() {
 	ui.PensizeLabel->setText(QString::number(Pensize));
 }
 
+void onMouseEvent(int event, int x, int y, int flags, void* param) {
+	Mat mouseImage = *(Mat*)param;
+	Scalar scolor;
+
+	switch (event) {
+	case EVENT_MOUSEMOVE:
+		if (flags & EVENT_LBUTTONDOWN) {
+			circle(mouseImage, Point(x, y), Pensize,Scalar(blueset,greenset,redset), -1);
+		}
+		break;
+	}
+	imshow(useMouse, mouseImage);
+}
+
 void QTProject::imageOpen() {
-	//cv::Mat imgtest;
 	QString filePath = QFileDialog::getOpenFileName(this, "Open Image File", QDir::currentPath());
 	QString fileName = filePath.section("/", -1);
-	if (!filePath.isEmpty())
-	{
-		QImage image(filePath);
 
-		if (image.isNull())
-		{
-			QMessageBox::information(this, "Image Viewer", "Error Displaying image");
-			return;
-		}
-		QGraphicsView* view = new QGraphicsView(&GScene);
-	
-		int w = image.width();
-		ui.WidthLabel->setText(QString::number(w));
 
-		int h = image.height();
-		ui.HeightLabel->setText(QString::number(h));
+	string stdstring;
 
-		QGraphicsPixmapItem* item = new QGraphicsPixmapItem(QPixmap::fromImage(image));
-		item->setOpacity(1);
-		GScene.addItem(item);
-		ui.testView->setScene(&GScene);
-//		undostack.push(scene);
+	stdstring = filePath.toStdString();
+
+	firstImage = imread(stdstring, IMREAD_UNCHANGED);
+	if (firstImage.empty()) {
+		messagebox.setText("none image");
+		return;
 	}
+	cv::resize(firstImage, firstImageRst, Size(512, 512), 0, 0, INTER_LINEAR);
+	namedWindow("OriginImage");
+	imshow("OriginImage", firstImageRst);
+	int w = image.width();
+	ui.WidthLabel->setText(QString::number(w));
+
+	int h = image.height();
+	ui.HeightLabel->setText(QString::number(h));
 	ui.FileLabel->setText(fileName);
-/*
-	while (!redostack.empty()) {
-		redostack.pop();
-	}*/
+
 }
 
 void QTProject::brushcountfunc() {
 	QString filePath = QFileDialog::getOpenFileName(this, "Open Image File", QDir::currentPath());
 	QString fileName = filePath.section("/", -1);
-	if (!filePath.isEmpty())
-	{
-		QImage image(filePath);
 
-		if (image.isNull())
-		{
-			QMessageBox::information(this, "Image Viewer", "Error Displaying image");
-			return;
-		}
-		QGraphicsView* view = new QGraphicsView(&GScene);
-		QGraphicsPixmapItem* item = new QGraphicsPixmapItem(QPixmap::fromImage(image));
-		item->setOpacity(0.7);
-		GScene.addItem(item);
-		ui.testView->setScene(&GScene);
-//		undostack.push(scene);
+	string stdstring;
+
+	stdstring = filePath.toStdString();
+
+	secondImage = imread(stdstring, IMREAD_UNCHANGED);
+	if (firstImage.empty() && secondImage.empty()) {
+		messagebox.setText("none image");
+		return;
 	}
-/*
-	while (!redostack.empty()) {
-		redostack.pop();
-	}*/
+	cv::resize(secondImage, secondImageRst, Size(512, 512), 0, 0, INTER_LINEAR);
+	namedWindow("PaintImage");
+	imshow("PaintImage", secondImageRst);
+
+	cv::addWeighted(firstImageRst, 0.8, secondImageRst, 0.6, 0, secondImageRst);
+	namedWindow("result");
+	imshow("result", secondImageRst);
+	setMouseCallback("result", onMouseEvent, (void*)& secondImageRst);
 }
 
+
 void QTProject::closeClicked() {
-	QMessageBox messagebox;
 	messagebox.setText("Do you want to exit?");
 	messagebox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
 	messagebox.setDefaultButton(QMessageBox::Ok);
@@ -176,7 +189,12 @@ void QTProject::imageSaveAs(){
 
 	QString filePath = imgSave.getSaveFileName(this, "Save Image", "", "Image Files(*.png *.jpg *.bmp *.raw)");
 	QString fileName = filePath.section("/", -1);
+	
+	string stdstring;
 
+	stdstring = filePath.toStdString();
+
+	imwrite(stdstring, secondImageRst);
 }
 
 void QTProject::Newfile(){
@@ -214,8 +232,4 @@ void QTProject::redo(){
 
 void QTProject::Screenshot() {
 
-}
-
-QTProject::~QTProject() {
-	//delete ui;
 }
