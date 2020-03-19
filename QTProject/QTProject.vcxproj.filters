@@ -57,5 +57,8 @@
     <ClInclude Include="tensorflow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Value.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

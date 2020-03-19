@@ -105,6 +105,7 @@
     <ClInclude Include="opencv.h" />
     <ClInclude Include="Qt.h" />
     <ClInclude Include="tensorflow.h" />
+    <ClInclude Include="Value.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

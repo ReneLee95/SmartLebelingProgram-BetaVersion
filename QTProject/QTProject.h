@@ -60,11 +60,6 @@ class QTProject : public QMainWindow {
 	Q_OBJECT
 public:
 	QTProject(QWidget* parent = Q_NULLPTR);
-
-	cv::Mat firstImage, secondImage;
-	cv::Mat firstImageRst, secondImageRst;
-	//stack<QGraphicsScene> undostack;
-	//stack<QGraphicsScene> redostack;
 	QMessageBox messagebox;
 //	Scene GScene;
 	QPixmap* pixamp;

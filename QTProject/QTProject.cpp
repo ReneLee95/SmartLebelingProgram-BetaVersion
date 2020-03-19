@@ -1,20 +1,5 @@
 #include "QTProject.h"
-
-QBrush Pencolor = Qt::black;
-qreal Pensize = 10;
-bool drawRect = false;
-bool drawCir = false;
-bool areaSelect = false;
-
-int brushcount = 1;
-int Colorselect = 1;
-int redset = 0;
-int greenset = 0;
-int blueset = 0;
-int cpX = -1;
-int cpY = -1;
-int areaX = -1;
-int areaY = -1;
+#include "Value.h"
 
 QTProject::QTProject(QWidget* parent)
 	: QMainWindow(parent) {
@@ -61,7 +46,7 @@ void QTProject::wheelEvent(QWheelEvent* event) {
 }
 
 void QTProject::Erase() {
-	Colorselect = 0;
+	brushcount = -2;
 	ui.Pencolor->setText("Erase");
 }
 
@@ -203,6 +188,35 @@ void onMouseEvent(int event, int x, int y, int flags, void* param) {
 			break;
 		}
 	}
+	else if (brushcount == -2) {
+		switch (event) {
+		case EVENT_LBUTTONDOWN:
+			eraseSelect = true;
+			break;
+		case EVENT_MOUSEMOVE:
+			if (flags & EVENT_LBUTTONDOWN) {
+				if (eraseSelect == true) {
+					eraseX = x;
+					eraseY = y;
+					for (int i = eraseX -Pensize; i < eraseX + Pensize; i++) {
+						for (int j = eraseY - Pensize; j < eraseY + Pensize; j++) {
+							if ((i > 0 && i < copyWidth) || (j > 0 && j < copyHeight)) {
+								secondImageRst.at<Vec3b>(j, i)[0] = imageClone.at<Vec3b>(j, i)[0];
+								secondImageRst.at<Vec3b>(j, i)[1] = imageClone.at<Vec3b>(j, i)[1];
+								secondImageRst.at<Vec3b>(j, i)[2] = imageClone.at<Vec3b>(j, i)[2];
+							}
+						}
+					}
+				}
+			}
+			break;
+		case EVENT_LBUTTONUP:
+			eraseSelect = false;
+			imshow("result", secondImageRst);
+			break;
+		}
+		imshow(useMouse, mouseImage);
+	}
 }
 
 void QTProject::imageOpen() {
@@ -250,6 +264,9 @@ void QTProject::brushcountfunc() {
 
 	cv::addWeighted(firstImageRst, 0.8, secondImageRst, 0.6, 0, secondImageRst);
 	namedWindow("result");
+	imageClone = secondImageRst.clone();
+	copyHeight = secondImageRst.rows;
+	copyWidth = secondImageRst.cols;
 	imshow("result", secondImageRst);
 	setMouseCallback("result", onMouseEvent, (void*)& secondImageRst);
 }
