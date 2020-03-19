@@ -2,11 +2,19 @@
 
 QBrush Pencolor = Qt::black;
 qreal Pensize = 10;
-int brushcount = 0;
+bool drawRect = false;
+bool drawCir = false;
+bool areaSelect = false;
+
+int brushcount = 1;
 int Colorselect = 1;
 int redset = 0;
 int greenset = 0;
 int blueset = 0;
+int cpX = -1;
+int cpY = -1;
+int areaX = -1;
+int areaY = -1;
 
 QTProject::QTProject(QWidget* parent)
 	: QMainWindow(parent) {
@@ -57,12 +65,6 @@ void QTProject::Erase() {
 	ui.Pencolor->setText("Erase");
 }
 
-void Scene::LineDraw() {
-	addItem(m_item = new QGraphicsPathItem);
-	m_item->setPen(QPen{ Pencolor, Pensize, Qt::SolidLine, Qt::RoundCap });
-	m_path = QPainterPath{};
-}
-
 void QTProject::colorBlackselect() {
 	Pencolor = Qt::black;
 	redset = 0;
@@ -97,18 +99,110 @@ void QTProject::fontsizedown() {
 	ui.PensizeLabel->setText(QString::number(Pensize));
 }
 
+void swapNumber(int* a, int* b) {
+	int* temp;
+	temp = a;
+	a = b;
+	b = temp;
+}
+
 void onMouseEvent(int event, int x, int y, int flags, void* param) {
 	Mat mouseImage = *(Mat*)param;
 	Scalar scolor;
-
-	switch (event) {
-	case EVENT_MOUSEMOVE:
-		if (flags & EVENT_LBUTTONDOWN) {
-			circle(mouseImage, Point(x, y), Pensize,Scalar(blueset,greenset,redset), -1);
+	if (brushcount == 1) {
+		switch (event) {
+		case EVENT_MOUSEMOVE:
+			if (flags & EVENT_LBUTTONDOWN) {
+				circle(mouseImage, Point(x, y), Pensize, Scalar(blueset, greenset, redset), -1);
+			}
+			break;
 		}
-		break;
+		imshow(useMouse, mouseImage);
 	}
-	imshow(useMouse, mouseImage);
+
+	else if (brushcount == 2) {
+		switch (event) {
+		case EVENT_LBUTTONDOWN:
+			drawRect = true;
+			cpX = x;
+			cpY = y;
+			break;
+		case EVENT_LBUTTONUP:
+			if (drawRect == true) {
+				if (x < cpX) {
+					swapNumber(&x, &cpX);
+				}
+				if (y < cpY) {
+					swapNumber(&y, &cpY);
+				}
+				rectangle(mouseImage, Point(cpX, cpY), Point(x, y), Scalar(blueset, greenset, redset), Pensize);
+			}
+			break;
+		}
+		imshow(useMouse, mouseImage);
+	}
+
+	else if (brushcount == 3) {
+		switch (event) {
+		case EVENT_LBUTTONDOWN:
+			drawCir = true;
+			cpX = x;
+			cpY = y;
+			break;
+		case EVENT_LBUTTONUP:
+			if (drawCir == true) {
+				if (x < cpX) {
+					swapNumber(&x, &cpX);
+				}
+				if (y < cpY) {
+					swapNumber(&y, &cpY);
+				}
+				if (x > (x + cpX)/2) {
+					if (x < cpX) {
+						swapNumber(&x, &cpX);
+					}
+					if (y < cpY) {
+						swapNumber(&y, &cpY);
+					}
+					circle(mouseImage, Point((x + cpX) / 2, (y + cpY) / 2), x - ((x + cpX) / 2), Scalar(blueset, greenset, redset), Pensize);
+				}
+				else {
+					circle(mouseImage, Point((x + cpX) / 2, (y + cpY) / 2), cpX - ((x + cpX) / 2), Scalar(blueset, greenset, redset), Pensize);
+				}
+			}
+			break;
+		}
+		imshow(useMouse, mouseImage);
+	}
+
+	else if (brushcount == -1) {
+		if (!mouseImage.data) {
+			QMessageBox messagebox;
+			messagebox.setText("none image");
+		}
+		switch (event) {
+		case EVENT_LBUTTONDOWN:
+			areaSelect = true;
+			areaX = x;
+			areaY = y;
+			break;
+		case EVENT_LBUTTONUP:
+			if (areaSelect == true) {
+				if (x < areaX) {
+					swapNumber(&x, &areaX);
+				}
+				if (y < areaY) {
+					swapNumber(&y, &areaY);
+				}
+				Rect rect(areaX, areaY, x, y);
+
+				Mat cutImage = mouseImage(rect);
+				imshow("Cut Image", cutImage);
+			}
+			areaSelect = false;
+			break;
+		}
+	}
 }
 
 void QTProject::imageOpen() {
