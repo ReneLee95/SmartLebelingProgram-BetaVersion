@@ -1,9 +1,7 @@
 #pragma once
 
 #include "ui_QTProject.h"
-#include <iostream>
-#include <stack>
-#include <vector>
+#include "C++Header.h"
 #include "Qt.h"
 #include "opencv.h"
 
@@ -98,4 +96,6 @@ public slots:
 	void DrawCir();
 	void Erase();
 	void AreaButton();
+	void Ellipse();
+	void extract();
 };

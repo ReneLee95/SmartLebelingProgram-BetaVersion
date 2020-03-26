@@ -23,6 +23,8 @@ QTProject::QTProject(QWidget* parent)
 	connect(ui.CircleButton, SIGNAL(clicked()), this, SLOT(DrawCir()));
 	connect(ui.eraseButton, SIGNAL(clicked()), this, SLOT(Erase()));
 	connect(ui.AreaButton, SIGNAL(clicked()), this, SLOT(AreaButton()));
+	connect(ui.EllipseButton, SIGNAL(clicked()), this, SLOT(Ellipse()));
+	connect(ui.extractButton, SIGNAL(clicked()), this, SLOT(extract()));
 
 	mouse_state = false;
 	if (Colorselect == 0) {
@@ -32,10 +34,6 @@ QTProject::QTProject(QWidget* parent)
 	ui.PensizeLabel->setText(QString::number(Pensize));
 }
 
-void QTProject::AreaButton() {
-	brushcount = -1;
-}
-
 void QTProject::wheelEvent(QWheelEvent* event) {
 	if (event->delta() > 0) {
 		ui.testView->scale(1.25, 1.25);
@@ -43,11 +41,6 @@ void QTProject::wheelEvent(QWheelEvent* event) {
 	else {
 		ui.testView->scale(0.8, 0.8);
 	}
-}
-
-void QTProject::Erase() {
-	brushcount = -2;
-	ui.Pencolor->setText("Erase");
 }
 
 void QTProject::colorBlackselect() {
@@ -91,6 +84,11 @@ void swapNumber(int* a, int* b) {
 	b = temp;
 }
 
+void createMatImage(Mat img) {
+	img = createMat[createMatNumber];
+	createMatNumber++;
+}
+
 void onMouseEvent(int event, int x, int y, int flags, void* param) {
 	Mat mouseImage = *(Mat*)param;
 	Scalar scolor;
@@ -100,6 +98,11 @@ void onMouseEvent(int event, int x, int y, int flags, void* param) {
 			if (flags & EVENT_LBUTTONDOWN) {
 				circle(mouseImage, Point(x, y), Pensize, Scalar(blueset, greenset, redset), -1);
 			}
+			break;
+		case EVENT_LBUTTONUP:
+			undoClone = secondImageRst.clone();
+			undoMat.push(undoClone);
+			undoCount++;
 			break;
 		}
 		imshow(useMouse, mouseImage);
@@ -121,6 +124,9 @@ void onMouseEvent(int event, int x, int y, int flags, void* param) {
 					swapNumber(&y, &cpY);
 				}
 				rectangle(mouseImage, Point(cpX, cpY), Point(x, y), Scalar(blueset, greenset, redset), Pensize);
+				undoClone = secondImageRst.clone();
+				undoMat.push(undoClone);
+				undoCount++;
 			}
 			break;
 		}
@@ -154,6 +160,9 @@ void onMouseEvent(int event, int x, int y, int flags, void* param) {
 				else {
 					circle(mouseImage, Point((x + cpX) / 2, (y + cpY) / 2), cpX - ((x + cpX) / 2), Scalar(blueset, greenset, redset), Pensize);
 				}
+				undoClone = secondImageRst.clone();
+				undoMat.push(undoClone);
+				undoCount++;
 			}
 			break;
 		}
@@ -208,12 +217,24 @@ void onMouseEvent(int event, int x, int y, int flags, void* param) {
 						}
 					}
 				}
+				undoClone = secondImageRst.clone();
+				undoMat.push(undoClone);
+				undoCount++;
 			}
 			break;
 		case EVENT_LBUTTONUP:
 			eraseSelect = false;
 			imshow("result", secondImageRst);
 			break;
+		}
+		imshow(useMouse, mouseImage);
+	}
+
+	else if (brushcount == -3) {
+		if (event == EVENT_LBUTTONDOWN) {
+			extractX = x;
+			extractY = y;
+			floodFill(mouseImage, Point(extractX, extractY), Scalar(blueset, greenset, redset));
 		}
 		imshow(useMouse, mouseImage);
 	}
@@ -268,7 +289,12 @@ void QTProject::brushcountfunc() {
 	copyHeight = secondImageRst.rows;
 	copyWidth = secondImageRst.cols;
 	imshow("result", secondImageRst);
+	setMouseCallback("OriginImage", onMouseEvent, (void*)& firstImageRst);
+	setMouseCallback("PaintImage", onMouseEvent, (void*)& secondImageRst);
 	setMouseCallback("result", onMouseEvent, (void*)& secondImageRst);
+	undoClone = secondImageRst.clone();
+	undoMat.push(undoClone);
+	undoCount++;
 }
 
 
@@ -283,6 +309,20 @@ void QTProject::closeClicked() {
 	}
 }
 
+void QTProject::AreaButton() {
+	brushcount = -1;
+}
+
+void QTProject::Erase() {
+	brushcount = -2;
+	ui.Pencolor->setText("Erase");
+}
+
+void QTProject::extract() {
+	brushcount = -3;
+	ui.Pencolor->setText("Extract");
+}
+
 void QTProject::DrawLine() {
 	brushcount = 1;
 	ui.Penmode->setText("Line");
@@ -295,6 +335,11 @@ void QTProject::DrawRect() {
 void QTProject::DrawCir() {
 	brushcount = 3;
 }
+
+void QTProject::Ellipse() {
+	brushcount = 4;
+}
+
 
 void QTProject::imageSaveAs(){
 
@@ -320,25 +365,31 @@ void QTProject::version(){
 }
 
 void QTProject::undo(){
-/*	if (undostack.empty()) {
-		QMessageBox::information(this, "none", "can't undo");
+	if (undoMat.empty()) {
+	QMessageBox::information(this, "none", "image none");
 	}
 	else {
-		ui.testView->setScene(&undostack.top());
-		redostack.push(undostack.top());
-		undostack.pop();
-	}*/
+		secondImageRst = undoMat.top();
+		imshow("result", secondImageRst);
+		redoMat.push(undoMat.top());
+		undoMat.pop();
+		undoCount--;
+		redoCount++;
+	}
 }
 
 void QTProject::redo(){
-/*	if (redostack.empty()) {
+	if (redoMat.empty()) {
 		QMessageBox::information(this, "none", "can't redo");
 	}
 	else {
-		ui.testView->setScene(&redostack.top());
-		undostack.push(redostack.top());
-		redostack.pop();
-	}*/
+		secondImageRst = redoMat.top();
+		imshow("result", secondImageRst);
+		undoMat.push(redoMat.top());
+		redoMat.pop();
+		redoCount--;
+		undoCount++;
+	}
 }
 
 void QTProject::Screenshot() {

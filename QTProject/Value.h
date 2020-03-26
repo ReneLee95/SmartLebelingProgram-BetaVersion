@@ -1,6 +1,7 @@
 #pragma once
 #include "Qt.h"
 #include "opencv.h"
+#include "C++Header.h"
 
 QBrush Pencolor = Qt::black;
 qreal Pensize = 10;
@@ -27,3 +28,20 @@ bool eraseSelect = false;
 
 int eraseX = -1;
 int eraseY = -1;
+
+bool drawEllipse = false;
+int ellipseX = -1;
+int ellipseY = -1;
+
+vector<Mat> createMat;
+int createMatNumber = 0;
+
+Mat undoClone;
+stack<Mat> undoMat;
+int undoCount = 0;
+
+stack<Mat> redoMat;
+int redoCount = 0;
+
+int extractX = 0;
+int extractY = 0;

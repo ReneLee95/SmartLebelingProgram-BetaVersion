@@ -102,6 +102,7 @@
     <QtRcc Include="QTProject.qrc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="C++Header.h" />
     <ClInclude Include="opencv.h" />
     <ClInclude Include="Qt.h" />
     <ClInclude Include="tensorflow.h" />
