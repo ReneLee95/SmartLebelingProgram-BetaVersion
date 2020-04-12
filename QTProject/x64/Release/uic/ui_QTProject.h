@@ -78,6 +78,7 @@ public:
     QRadioButton *EllipseButton;
     QGraphicsView *testView;
     QPushButton *extractButton;
+    QPushButton *InputButton;
     QMenuBar *menuBar;
     QMenu *menuQTProject;
     QMenu *menuOption;
@@ -280,6 +281,9 @@ public:
         extractButton = new QPushButton(centralWidget);
         extractButton->setObjectName(QStringLiteral("extractButton"));
         extractButton->setGeometry(QRect(1110, 10, 131, 41));
+        InputButton = new QPushButton(centralWidget);
+        InputButton->setObjectName(QStringLiteral("InputButton"));
+        InputButton->setGeometry(QRect(1110, 60, 131, 41));
         QTProjectClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(QTProjectClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
@@ -419,6 +423,7 @@ public:
         AreaButton->setText(QApplication::translate("QTProjectClass", "Area", Q_NULLPTR));
         EllipseButton->setText(QApplication::translate("QTProjectClass", "Ellipse", Q_NULLPTR));
         extractButton->setText(QApplication::translate("QTProjectClass", "Extract", Q_NULLPTR));
+        InputButton->setText(QApplication::translate("QTProjectClass", "Input", Q_NULLPTR));
         menuQTProject->setTitle(QApplication::translate("QTProjectClass", "File", Q_NULLPTR));
         menuOption->setTitle(QApplication::translate("QTProjectClass", "Edit", Q_NULLPTR));
         menuHelp->setTitle(QApplication::translate("QTProjectClass", "Help", Q_NULLPTR));

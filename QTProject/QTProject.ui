@@ -643,6 +643,19 @@ p, li { white-space: pre-wrap; }
      <string>Extract</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="InputButton">
+    <property name="geometry">
+     <rect>
+      <x>1110</x>
+      <y>60</y>
+      <width>131</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Input</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="enabled">

@@ -54,9 +54,6 @@
     <ClInclude Include="opencv.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tensorflow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Value.h">
       <Filter>Header Files</Filter>
     </ClInclude>

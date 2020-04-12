@@ -10,7 +10,9 @@ bool drawCir = false;
 bool areaSelect = false;
 cv::Mat firstImage, secondImage;
 cv::Mat firstImageRst, secondImageRst;
-cv::Mat imageClone;
+cv::Mat imageCloneOver;
+cv::Mat imageClonePaint;
+cv::Mat imageCloneOrigin;
 
 int brushcount = 1;
 int Colorselect = 1;
@@ -22,8 +24,15 @@ int cpY = -1;
 int areaX = -1;
 int areaY = -1;
 
-int copyHeight = 0;
-int copyWidth = 0;
+int copyHeightOrigin = 0;
+int copyWidthOrigin = 0;
+
+int copyHeightPaint = 0;
+int copyWidthPaint = 0;
+
+int copyHeightOver = 0;
+int copyWidthOver = 0;
+
 bool eraseSelect = false;
 
 int eraseX = -1;
@@ -38,10 +47,8 @@ int createMatNumber = 0;
 
 Mat undoClone;
 stack<Mat> undoMat;
-int undoCount = 0;
 
 stack<Mat> redoMat;
-int redoCount = 0;
 
 int extractX = 0;
 int extractY = 0;

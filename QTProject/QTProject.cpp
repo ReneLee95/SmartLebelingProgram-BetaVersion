@@ -77,6 +77,11 @@ void QTProject::fontsizedown() {
 	ui.PensizeLabel->setText(QString::number(Pensize));
 }
 
+void createMatImage(Mat img) {
+	img = createMat[createMatNumber];
+	createMatNumber++;
+}
+
 void swapNumber(int* a, int* b) {
 	int* temp;
 	temp = a;
@@ -84,15 +89,11 @@ void swapNumber(int* a, int* b) {
 	b = temp;
 }
 
-void createMatImage(Mat img) {
-	img = createMat[createMatNumber];
-	createMatNumber++;
-}
-
+#if 1
 void onMouseEvent(int event, int x, int y, int flags, void* param) {
 	Mat mouseImage = *(Mat*)param;
 	Scalar scolor;
-	if (brushcount == 1) {
+	if (brushcount == 1) { //Line draw
 		switch (event) {
 		case EVENT_MOUSEMOVE:
 			if (flags & EVENT_LBUTTONDOWN) {
@@ -102,13 +103,12 @@ void onMouseEvent(int event, int x, int y, int flags, void* param) {
 		case EVENT_LBUTTONUP:
 			undoClone = secondImageRst.clone();
 			undoMat.push(undoClone);
-			undoCount++;
 			break;
 		}
 		imshow(useMouse, mouseImage);
 	}
 
-	else if (brushcount == 2) {
+	else if (brushcount == 2) { //Rectangle draw
 		switch (event) {
 		case EVENT_LBUTTONDOWN:
 			drawRect = true;
@@ -126,14 +126,13 @@ void onMouseEvent(int event, int x, int y, int flags, void* param) {
 				rectangle(mouseImage, Point(cpX, cpY), Point(x, y), Scalar(blueset, greenset, redset), Pensize);
 				undoClone = secondImageRst.clone();
 				undoMat.push(undoClone);
-				undoCount++;
 			}
 			break;
 		}
 		imshow(useMouse, mouseImage);
 	}
 
-	else if (brushcount == 3) {
+	else if (brushcount == 3) { //Circle draw
 		switch (event) {
 		case EVENT_LBUTTONDOWN:
 			drawCir = true;
@@ -148,7 +147,7 @@ void onMouseEvent(int event, int x, int y, int flags, void* param) {
 				if (y < cpY) {
 					swapNumber(&y, &cpY);
 				}
-				if (x > (x + cpX)/2) {
+				if (x > (x + cpX) / 2) {
 					if (x < cpX) {
 						swapNumber(&x, &cpX);
 					}
@@ -162,14 +161,13 @@ void onMouseEvent(int event, int x, int y, int flags, void* param) {
 				}
 				undoClone = secondImageRst.clone();
 				undoMat.push(undoClone);
-				undoCount++;
 			}
 			break;
 		}
 		imshow(useMouse, mouseImage);
 	}
 
-	else if (brushcount == -1) {
+	else if (brushcount == -1) { //cut Image
 		if (!mouseImage.data) {
 			QMessageBox messagebox;
 			messagebox.setText("none image");
@@ -197,7 +195,7 @@ void onMouseEvent(int event, int x, int y, int flags, void* param) {
 			break;
 		}
 	}
-	else if (brushcount == -2) {
+	else if (brushcount == -2) { //erase drawing
 		switch (event) {
 		case EVENT_LBUTTONDOWN:
 			eraseSelect = true;
@@ -207,19 +205,20 @@ void onMouseEvent(int event, int x, int y, int flags, void* param) {
 				if (eraseSelect == true) {
 					eraseX = x;
 					eraseY = y;
-					for (int i = eraseX -Pensize; i < eraseX + Pensize; i++) {
-						for (int j = eraseY - Pensize; j < eraseY + Pensize; j++) {
-							if ((i > 0 && i < copyWidth) || (j > 0 && j < copyHeight)) {
-								secondImageRst.at<Vec3b>(j, i)[0] = imageClone.at<Vec3b>(j, i)[0];
-								secondImageRst.at<Vec3b>(j, i)[1] = imageClone.at<Vec3b>(j, i)[1];
-								secondImageRst.at<Vec3b>(j, i)[2] = imageClone.at<Vec3b>(j, i)[2];
+					for (int i = eraseX - Pensize; i < eraseX + Pensize; i++) {
+						if (eraseX - Pensize > 0 && eraseX + Pensize < copyWidthOver) {
+							for (int j = eraseY - Pensize; j < eraseY + Pensize; j++) {
+								if (eraseY - Pensize > 0 && eraseY + Pensize < copyHeightOver) {
+									secondImageRst.at<Vec3b>(j, i)[0] = imageCloneOver.at<Vec3b>(j, i)[0];
+									secondImageRst.at<Vec3b>(j, i)[1] = imageCloneOver.at<Vec3b>(j, i)[1];
+									secondImageRst.at<Vec3b>(j, i)[2] = imageCloneOver.at<Vec3b>(j, i)[2];
+								}
 							}
 						}
 					}
 				}
 				undoClone = secondImageRst.clone();
 				undoMat.push(undoClone);
-				undoCount++;
 			}
 			break;
 		case EVENT_LBUTTONUP:
@@ -230,15 +229,305 @@ void onMouseEvent(int event, int x, int y, int flags, void* param) {
 		imshow(useMouse, mouseImage);
 	}
 
-	else if (brushcount == -3) {
+	else if (brushcount == -3) { // floodFill image
 		if (event == EVENT_LBUTTONDOWN) {
 			extractX = x;
 			extractY = y;
-			floodFill(mouseImage, Point(extractX, extractY), Scalar(blueset, greenset, redset));
+			//	floodFill(mouseImage, Point(extractX, extractY), Scalar(blueset, greenset, redset));
+			floodFill(firstImageRst, Point(extractX, extractY), Scalar(blueset, greenset, redset));
+			floodFill(secondImageRst, Point(extractX, extractY), Scalar(blueset, greenset, redset));
+			undoClone = secondImageRst.clone();
+			undoMat.push(undoClone);
 		}
 		imshow(useMouse, mouseImage);
 	}
 }
+#endif
+
+#if 1
+void onMouseEventOrigin(int event, int x, int y, int flags, void* param) {
+	Mat mouseImageOrigin = *(Mat*)param;
+	Scalar scolor;
+	if (brushcount == 1) { //Line draw
+		switch (event) {
+		case EVENT_MOUSEMOVE:
+			if (flags & EVENT_LBUTTONDOWN) {
+				circle(mouseImageOrigin, Point(x, y), Pensize, Scalar(blueset, greenset, redset), -1);
+			}
+			break;
+		}
+		imshow("OriginImage", firstImage);
+	}
+
+	else if (brushcount == 2) { //Rectangle draw
+		switch (event) {
+		case EVENT_LBUTTONDOWN:
+			drawRect = true;
+			cpX = x;
+			cpY = y;
+			break;
+		case EVENT_LBUTTONUP:
+			if (drawRect == true) {
+				if (x < cpX) {
+					swapNumber(&x, &cpX);
+				}
+				if (y < cpY) {
+					swapNumber(&y, &cpY);
+				}
+				rectangle(mouseImageOrigin, Point(cpX, cpY), Point(x, y), Scalar(blueset, greenset, redset), Pensize);
+			}
+			break;
+		}
+		imshow("OriginImage", firstImage);
+	}
+
+	else if (brushcount == 3) { //Circle draw
+		switch (event) {
+		case EVENT_LBUTTONDOWN:
+			drawCir = true;
+			cpX = x;
+			cpY = y;
+			break;
+		case EVENT_LBUTTONUP:
+			if (drawCir == true) {
+				if (x < cpX) {
+					swapNumber(&x, &cpX);
+				}
+				if (y < cpY) {
+					swapNumber(&y, &cpY);
+				}
+				if (x > (x + cpX) / 2) {
+					if (x < cpX) {
+						swapNumber(&x, &cpX);
+					}
+					if (y < cpY) {
+						swapNumber(&y, &cpY);
+					}
+					circle(mouseImageOrigin, Point((x + cpX) / 2, (y + cpY) / 2), x - ((x + cpX) / 2), Scalar(blueset, greenset, redset), Pensize);
+				}
+				else {
+					circle(mouseImageOrigin, Point((x + cpX) / 2, (y + cpY) / 2), cpX - ((x + cpX) / 2), Scalar(blueset, greenset, redset), Pensize);
+				}
+			}
+			break;
+		}
+		imshow("OriginImage", firstImage);
+	}
+
+	else if (brushcount == -1) { //cut Image
+		if (!mouseImageOrigin.data) {
+			QMessageBox messagebox;
+			messagebox.setText("none image");
+		}
+		switch (event) {
+		case EVENT_LBUTTONDOWN:
+			areaSelect = true;
+			areaX = x;
+			areaY = y;
+			break;
+		case EVENT_LBUTTONUP:
+			if (areaSelect == true) {
+				if (x < areaX) {
+					swapNumber(&x, &areaX);
+				}
+				if (y < areaY) {
+					swapNumber(&y, &areaY);
+				}
+				Rect rect(areaX, areaY, x, y);
+
+				Mat cutImage = mouseImageOrigin(rect);
+				imshow("Cut Image (Origin)", cutImage);
+			}
+			areaSelect = false;
+			break;
+		}
+	}
+	else if (brushcount == -2) { //erase drawing
+		switch (event) {
+		case EVENT_LBUTTONDOWN:
+			eraseSelect = true;
+			break;
+		case EVENT_MOUSEMOVE:
+			if (flags & EVENT_LBUTTONDOWN) {
+				if (eraseSelect == true) {
+					eraseX = x;
+					eraseY = y;
+					for (int i = eraseX - Pensize; i < eraseX + Pensize; i++) {
+						if (eraseX - Pensize > 0 && eraseX + Pensize < copyWidthOrigin) {
+							for (int j = eraseY - Pensize; j < eraseY + Pensize; j++) {
+								if (j > 0 && j < copyHeightOrigin) {
+									firstImage.at<Vec3b>(j, i)[0] = imageCloneOrigin.at<Vec3b>(j, i)[0];
+									firstImage.at<Vec3b>(j, i)[1] = imageCloneOrigin.at<Vec3b>(j, i)[1];
+									firstImage.at<Vec3b>(j, i)[2] = imageCloneOrigin.at<Vec3b>(j, i)[2];
+								}
+							}
+						}
+					}
+				}
+			}
+			break;
+		case EVENT_LBUTTONUP:
+			eraseSelect = false;
+			imshow("OriginImage", firstImage);
+			break;
+		}
+		imshow("OriginImage", firstImage);
+	}
+
+	else if (brushcount == -3) { // floodFill image
+		if (event == EVENT_LBUTTONDOWN) {
+			extractX = x;
+			extractY = y;
+			//	floodFill(mouseImage, Point(extractX, extractY), Scalar(blueset, greenset, redset));
+			floodFill(firstImageRst, Point(extractX, extractY), Scalar(blueset, greenset, redset));
+			floodFill(secondImageRst, Point(extractX, extractY), Scalar(blueset, greenset, redset));
+		}
+		imshow("OriginImage", firstImage);
+	}
+}
+#endif
+
+#if 1
+void onMouseEventPaint(int event, int x, int y, int flags, void* param) {
+	Mat mouseImagePaint = *(Mat*)param;
+	Scalar scolor;
+	if (brushcount == 1) { //Line draw
+		switch (event) {
+		case EVENT_MOUSEMOVE:
+			if (flags & EVENT_LBUTTONDOWN) {
+				circle(mouseImagePaint, Point(x, y), Pensize, Scalar(blueset, greenset, redset), -1);
+			}
+			break;
+		}
+		imshow("PaintImage", secondImage);
+	}
+
+	else if (brushcount == 2) { //Rectangle draw
+		switch (event) {
+		case EVENT_LBUTTONDOWN:
+			drawRect = true;
+			cpX = x;
+			cpY = y;
+			break;
+		case EVENT_LBUTTONUP:
+			if (drawRect == true) {
+				if (x < cpX) {
+					swapNumber(&x, &cpX);
+				}
+				if (y < cpY) {
+					swapNumber(&y, &cpY);
+				}
+				rectangle(mouseImagePaint, Point(cpX, cpY), Point(x, y), Scalar(blueset, greenset, redset), Pensize);
+			}
+			break;
+		}
+		imshow("PaintImage", secondImage);
+	}
+
+	else if (brushcount == 3) { //Circle draw
+		switch (event) {
+		case EVENT_LBUTTONDOWN:
+			drawCir = true;
+			cpX = x;
+			cpY = y;
+			break;
+		case EVENT_LBUTTONUP:
+			if (drawCir == true) {
+				if (x < cpX) {
+					swapNumber(&x, &cpX);
+				}
+				if (y < cpY) {
+					swapNumber(&y, &cpY);
+				}
+				if (x > (x + cpX) / 2) {
+					if (x < cpX) {
+						swapNumber(&x, &cpX);
+					}
+					if (y < cpY) {
+						swapNumber(&y, &cpY);
+					}
+					circle(mouseImagePaint, Point((x + cpX) / 2, (y + cpY) / 2), x - ((x + cpX) / 2), Scalar(blueset, greenset, redset), Pensize);
+				}
+				else {
+					circle(mouseImagePaint, Point((x + cpX) / 2, (y + cpY) / 2), cpX - ((x + cpX) / 2), Scalar(blueset, greenset, redset), Pensize);
+				}
+			}
+			break;
+		}
+		imshow("PaintImage", secondImage);
+	}
+
+	else if (brushcount == -1) { //cut Image
+		if (!mouseImagePaint.data) {
+			QMessageBox messagebox;
+			messagebox.setText("none image");
+		}
+		switch (event) {
+		case EVENT_LBUTTONDOWN:
+			areaSelect = true;
+			areaX = x;
+			areaY = y;
+			break;
+		case EVENT_LBUTTONUP:
+			if (areaSelect == true) {
+				if (x < areaX) {
+					swapNumber(&x, &areaX);
+				}
+				if (y < areaY) {
+					swapNumber(&y, &areaY);
+				}
+				Rect rect(areaX, areaY, x, y);
+
+				Mat cutImage = mouseImagePaint(rect);
+				imshow("Cut Image (secondImage)", cutImage);
+			}
+			areaSelect = false;
+			break;
+		}
+	}
+	else if (brushcount == -2) { //erase drawing
+		switch (event) {
+		case EVENT_LBUTTONDOWN:
+			eraseSelect = true;
+			break;
+		case EVENT_MOUSEMOVE:
+			if (flags & EVENT_LBUTTONDOWN) {
+				if (eraseSelect == true) {
+					eraseX = x;
+					eraseY = y;
+					for (int i = eraseX - Pensize; i < eraseX + Pensize; i++) {
+						if (eraseX - Pensize > 0 && eraseX + Pensize < copyWidthOrigin) {
+							for (int j = eraseY - Pensize; j < eraseY + Pensize; j++) {
+								if (j > 0 && j < copyHeightPaint) {
+									secondImage.at<Vec3b>(j, i)[0] = imageClonePaint.at<Vec3b>(j, i)[0];
+									secondImage.at<Vec3b>(j, i)[1] = imageClonePaint.at<Vec3b>(j, i)[1];
+									secondImage.at<Vec3b>(j, i)[2] = imageClonePaint.at<Vec3b>(j, i)[2];
+								}
+							}
+						}
+					}
+				}
+			}
+			break;
+		case EVENT_LBUTTONUP:
+			eraseSelect = false;
+			break;
+		}
+		imshow("PaintImage", secondImage);
+	}
+
+	else if (brushcount == -3) { // floodFill image
+		if (event == EVENT_LBUTTONDOWN) {
+			extractX = x;
+			extractY = y;
+			//	floodFill(mouseImage, Point(extractX, extractY), Scalar(blueset, greenset, redset));
+			floodFill(firstImageRst, Point(extractX, extractY), Scalar(blueset, greenset, redset));
+			floodFill(secondImageRst, Point(extractX, extractY), Scalar(blueset, greenset, redset));
+		}
+		imshow(useMouse, mouseImagePaint);
+	}
+}
+#endif
 
 void QTProject::imageOpen() {
 	QString filePath = QFileDialog::getOpenFileName(this, "Open Image File", QDir::currentPath());
@@ -254,9 +543,13 @@ void QTProject::imageOpen() {
 		messagebox.setText("none image");
 		return;
 	}
-	cv::resize(firstImage, firstImageRst, Size(512, 512), 0, 0, INTER_LINEAR);
-	namedWindow("OriginImage");
-	imshow("OriginImage", firstImageRst);
+	cv::resize(firstImage, firstImage, Size(512, 512), 0, 0, INTER_LINEAR);
+	imageCloneOrigin = firstImage.clone();
+	copyHeightOrigin = firstImage.rows;
+	copyWidthOrigin = firstImage.cols;
+	//namedWindow("OriginImage");
+	imshow("OriginImage", firstImage);
+	setMouseCallback("OriginImage", onMouseEventOrigin, (void*)& firstImage);
 	int w = image.width();
 	ui.WidthLabel->setText(QString::number(w));
 
@@ -279,22 +572,22 @@ void QTProject::brushcountfunc() {
 		messagebox.setText("none image");
 		return;
 	}
-	cv::resize(secondImage, secondImageRst, Size(512, 512), 0, 0, INTER_LINEAR);
-	namedWindow("PaintImage");
-	imshow("PaintImage", secondImageRst);
-
-	cv::addWeighted(firstImageRst, 0.8, secondImageRst, 0.6, 0, secondImageRst);
-	namedWindow("result");
-	imageClone = secondImageRst.clone();
-	copyHeight = secondImageRst.rows;
-	copyWidth = secondImageRst.cols;
+	cv::resize(secondImage, secondImage, Size(512, 512), 0, 0, INTER_LINEAR);
+	imageClonePaint = secondImage.clone();
+	copyHeightPaint = secondImage.rows;
+	copyWidthPaint = secondImage.cols;
+	imshow("PaintImage", secondImage);
+	setMouseCallback("PaintImage", onMouseEventPaint, (void*)& secondImage);
+	
+	cv::addWeighted(firstImage, 0.8, secondImage, 0.6, 0, secondImageRst);
+	imageCloneOver = secondImageRst.clone();
+	copyHeightOver = secondImageRst.rows;
+	copyWidthOver = secondImageRst.cols;
 	imshow("result", secondImageRst);
-	setMouseCallback("OriginImage", onMouseEvent, (void*)& firstImageRst);
-	setMouseCallback("PaintImage", onMouseEvent, (void*)& secondImageRst);
 	setMouseCallback("result", onMouseEvent, (void*)& secondImageRst);
 	undoClone = secondImageRst.clone();
 	undoMat.push(undoClone);
-	undoCount++;
+	
 }
 
 
@@ -315,12 +608,12 @@ void QTProject::AreaButton() {
 
 void QTProject::Erase() {
 	brushcount = -2;
-	ui.Pencolor->setText("Erase");
+	ui.Penmode->setText("Erase");
 }
 
 void QTProject::extract() {
 	brushcount = -3;
-	ui.Pencolor->setText("Extract");
+	ui.Penmode->setText("Extract");
 }
 
 void QTProject::DrawLine() {
@@ -373,8 +666,6 @@ void QTProject::undo(){
 		imshow("result", secondImageRst);
 		redoMat.push(undoMat.top());
 		undoMat.pop();
-		undoCount--;
-		redoCount++;
 	}
 }
 
@@ -387,8 +678,6 @@ void QTProject::redo(){
 		imshow("result", secondImageRst);
 		undoMat.push(redoMat.top());
 		redoMat.pop();
-		redoCount--;
-		undoCount++;
 	}
 }
 

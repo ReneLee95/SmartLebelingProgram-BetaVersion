@@ -7,6 +7,8 @@
 
 #define useMouse "result"
 
+
+
 class EmptyItem : public QGraphicsItem {
 public:
 	EmptyItem(QGraphicsItem* parent = nullptr) : QGraphicsItem{ parent } {}

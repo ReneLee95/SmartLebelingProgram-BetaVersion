@@ -1,2 +1,2 @@
-﻿  QTProject.cpp
-  QTProject.vcxproj -> C:\Users\lsh95\Documents\GitHub\QTProjectTest\x64\Release\QTProject.exe
+﻿  Reading Qt configuration (D:\QT\5.9.9\msvc2017_64\bin\qmake.exe)
+LINK : fatal error LNK1104: 'libboost_numpy3-vc142-mt-x64-1_72.lib' 파일을 열 수 없습니다.
