@@ -100,4 +100,6 @@ public slots:
 	void AreaButton();
 	void Ellipse();
 	void extract();
+	void inputButton();
+	void roiButton();
 };

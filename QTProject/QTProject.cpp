@@ -24,7 +24,8 @@ QTProject::QTProject(QWidget* parent)
 	connect(ui.eraseButton, SIGNAL(clicked()), this, SLOT(Erase()));
 	connect(ui.AreaButton, SIGNAL(clicked()), this, SLOT(AreaButton()));
 	connect(ui.EllipseButton, SIGNAL(clicked()), this, SLOT(Ellipse()));
-	connect(ui.extractButton, SIGNAL(clicked()), this, SLOT(extract()));
+	connect(ui.roiButton, SIGNAL(clicked()), this, SLOT(roiButton()));
+	connect(ui.InputButton, SIGNAL(clicked()), this, SLOT(inputButton()));
 
 	mouse_state = false;
 	if (Colorselect == 0) {
@@ -186,9 +187,9 @@ void onMouseEvent(int event, int x, int y, int flags, void* param) {
 				if (y < areaY) {
 					swapNumber(&y, &areaY);
 				}
-				Rect rect(areaX, areaY, x, y);
+				Rect cutrect(areaX, areaY, x, y);
 
-				Mat cutImage = mouseImage(rect);
+				Mat cutImage = mouseImage(cutrect);
 				imshow("Cut Image", cutImage);
 			}
 			areaSelect = false;
@@ -225,19 +226,6 @@ void onMouseEvent(int event, int x, int y, int flags, void* param) {
 			eraseSelect = false;
 			imshow("result", secondImageRst);
 			break;
-		}
-		imshow(useMouse, mouseImage);
-	}
-
-	else if (brushcount == -3) { // floodFill image
-		if (event == EVENT_LBUTTONDOWN) {
-			extractX = x;
-			extractY = y;
-			//	floodFill(mouseImage, Point(extractX, extractY), Scalar(blueset, greenset, redset));
-			floodFill(firstImageRst, Point(extractX, extractY), Scalar(blueset, greenset, redset));
-			floodFill(secondImageRst, Point(extractX, extractY), Scalar(blueset, greenset, redset));
-			undoClone = secondImageRst.clone();
-			undoMat.push(undoClone);
 		}
 		imshow(useMouse, mouseImage);
 	}
@@ -556,7 +544,6 @@ void QTProject::imageOpen() {
 	int h = image.height();
 	ui.HeightLabel->setText(QString::number(h));
 	ui.FileLabel->setText(fileName);
-
 }
 
 void QTProject::brushcountfunc() {
@@ -612,8 +599,8 @@ void QTProject::Erase() {
 }
 
 void QTProject::extract() {
-	brushcount = -3;
-	ui.Penmode->setText("Extract");
+	//brushcount = -3;
+	ui.Penmode->setText("ROI");
 }
 
 void QTProject::DrawLine() {
@@ -633,6 +620,53 @@ void QTProject::Ellipse() {
 	brushcount = 4;
 }
 
+void QTProject::roiButton() {
+	Mat ROIImage;
+	ROIImage = imageCloneOver.clone();
+
+	for (int i = 0; i <secondImageRst.cols; i++) {
+		for (int j = 0; j < secondImageRst.rows; j++) {
+//			cv::Vec3b OriginVec = firstImage.at<cv::Vec3b>(i, j);
+//			cv::Vec3b PaintVec = secondImage.at<cv::Vec3b>(i, j);
+
+			if (imageCloneOver.at<Vec3b>(i, j)[0] != secondImageRst.at<Vec3b>(i, j)[0] &&
+				imageCloneOver.at<Vec3b>(i, j)[1] != secondImageRst.at<Vec3b>(i, j)[1] &&
+				imageCloneOver.at<Vec3b>(i, j)[2] != secondImageRst.at<Vec3b>(i, j)[2]) {
+				ROIImage.at<Vec3b>(i, j)[0] = 50;
+				ROIImage.at<Vec3b>(i, j)[1] = 100;
+				ROIImage.at<Vec3b>(i, j)[2] = 150;
+			}
+
+			secondImageRst.at<Vec3b>(i, j) = ROIImage.at<Vec3b>(i, j);
+			
+			if (ROIImage.at<Vec3b>(i, j) != secondImageRst.at<Vec3b>(i, j)) {
+				ROIImage.at<Vec3b>(i, j)[0] = imageCloneOver.at<Vec3b>(i, j)[0];
+				ROIImage.at<Vec3b>(i, j)[1] = imageCloneOver.at<Vec3b>(i, j)[1];
+				ROIImage.at<Vec3b>(i, j)[2] = imageCloneOver.at<Vec3b>(i, j)[2];
+			}
+			secondImageRst.at<Vec3b>(i, j) = ROIImage.at<Vec3b>(i, j);
+		}
+	}
+
+	QFileDialog ROIsave;
+	QString filePath = ROIsave.getSaveFileName(this, "ROI Image", "", "Image Files(*.png *.jpg *.bmp *.raw)");
+	QString fileName = filePath.section("/", -1);
+
+	string stdstring;
+
+	stdstring = filePath.toStdString();
+
+	imwrite(stdstring, secondImageRst);
+}
+
+
+void QTProject::inputButton() {
+	Mat inputImage;
+	inputImage = imread("ROI.jpg", IMREAD_UNCHANGED);
+	//addWeighted(secondImageRst, 1, inputImage, 1, 0, secondImageRst);
+	cv::add(secondImageRst, inputImage,secondImageRst);
+	imshow("result", secondImageRst);
+}
 
 void QTProject::imageSaveAs(){
 
@@ -654,7 +688,7 @@ void QTProject::Newfile(){
 }
 
 void QTProject::version(){
-	QMessageBox::information(this, "Version", "Version : 0.0.1(Alpha)");
+	QMessageBox::information(this, "Version", "Version : 0.1(Alpha)");
 }
 
 void QTProject::undo(){

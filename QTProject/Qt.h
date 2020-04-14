@@ -20,5 +20,6 @@
 #include <qgraphicssceneevent.h>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/qpushbutton.h>
+#include <QtCore/qcoreapplication.h>
 
 using namespace std;
