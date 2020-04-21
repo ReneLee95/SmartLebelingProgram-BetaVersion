@@ -565,7 +565,7 @@ void QTProject::brushcountfunc() {
 	copyWidthPaint = secondImage.cols;
 	imshow("PaintImage", secondImage);
 	setMouseCallback("PaintImage", onMouseEventPaint, (void*)& secondImage);
-	
+
 	cv::addWeighted(firstImage, 0.8, secondImage, 0.6, 0, secondImageRst);
 	imageCloneOver = secondImageRst.clone();
 	copyHeightOver = secondImageRst.rows;
@@ -574,7 +574,9 @@ void QTProject::brushcountfunc() {
 	setMouseCallback("result", onMouseEvent, (void*)& secondImageRst);
 	undoClone = secondImageRst.clone();
 	undoMat.push(undoClone);
-	
+
+	ROIImage = Mat::zeros(imageCloneOver.rows, imageCloneOver.cols, CV_8UC3);
+	setMouseCallback("roi", onMouseEvent, (void*)& ROIImage);
 }
 
 
@@ -621,14 +623,12 @@ void QTProject::Ellipse() {
 }
 
 void QTProject::roiButton() {
-	Mat ROIImage;
-	ROIImage = imageCloneOver.clone();
 
 	for (int i = 0; i <secondImageRst.cols; i++) {
 		for (int j = 0; j < secondImageRst.rows; j++) {
 //			cv::Vec3b OriginVec = firstImage.at<cv::Vec3b>(i, j);
 //			cv::Vec3b PaintVec = secondImage.at<cv::Vec3b>(i, j);
-
+			/*
 			if (imageCloneOver.at<Vec3b>(i, j)[0] != secondImageRst.at<Vec3b>(i, j)[0] &&
 				imageCloneOver.at<Vec3b>(i, j)[1] != secondImageRst.at<Vec3b>(i, j)[1] &&
 				imageCloneOver.at<Vec3b>(i, j)[2] != secondImageRst.at<Vec3b>(i, j)[2]) {
@@ -636,15 +636,24 @@ void QTProject::roiButton() {
 				ROIImage.at<Vec3b>(i, j)[1] = 100;
 				ROIImage.at<Vec3b>(i, j)[2] = 150;
 			}
+			*/
 
-			secondImageRst.at<Vec3b>(i, j) = ROIImage.at<Vec3b>(i, j);
-			
+			if ((ROIImage.at<Vec3b>(i, j)[0] != 0 || ROIImage.at<Vec3b>(i, j)[1] != 0 || ROIImage.at<Vec3b>(i, j)[2] != 0)
+				&&(imageCloneOver.at<Vec3b>(i, j)[0] ==0 || imageCloneOver.at<Vec3b>(i, j)[1] ==0 || imageCloneOver.at<Vec3b>(i, j)[2] ==0 )){
+				ROIImage.at<Vec3b>(i, j)[0] = 50;
+				ROIImage.at<Vec3b>(i, j)[1] = 100;
+				ROIImage.at<Vec3b>(i, j)[2] = 150;
+
+				secondImageRst.at<Vec3b>(i, j) = ROIImage.at<Vec3b>(i, j);
+			}
+			/*
 			if (ROIImage.at<Vec3b>(i, j) != secondImageRst.at<Vec3b>(i, j)) {
 				ROIImage.at<Vec3b>(i, j)[0] = imageCloneOver.at<Vec3b>(i, j)[0];
 				ROIImage.at<Vec3b>(i, j)[1] = imageCloneOver.at<Vec3b>(i, j)[1];
 				ROIImage.at<Vec3b>(i, j)[2] = imageCloneOver.at<Vec3b>(i, j)[2];
 			}
 			secondImageRst.at<Vec3b>(i, j) = ROIImage.at<Vec3b>(i, j);
+			*/
 		}
 	}
 
@@ -661,11 +670,17 @@ void QTProject::roiButton() {
 
 
 void QTProject::inputButton() {
+	QString filePath = QFileDialog::getOpenFileName(this, "Open Image File", QDir::currentPath());
+	QString fileName = filePath.section("/", -1);
 	Mat inputImage;
-	inputImage = imread("ROI.jpg", IMREAD_UNCHANGED);
-	//addWeighted(secondImageRst, 1, inputImage, 1, 0, secondImageRst);
-	cv::add(secondImageRst, inputImage,secondImageRst);
-	imshow("result", secondImageRst);
+
+	string stdstring;
+
+	stdstring = filePath.toStdString();
+
+	inputImage = imread(stdstring, IMREAD_UNCHANGED);
+
+	cv::addWeighted(secondImageRst, 0.5, inputImage, 0.5, 0, secondImageRst);
 }
 
 void QTProject::imageSaveAs(){

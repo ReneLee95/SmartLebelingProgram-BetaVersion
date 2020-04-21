@@ -52,3 +52,6 @@ stack<Mat> redoMat;
 
 int extractX = 0;
 int extractY = 0;
+
+Mat ROIImage;
+int roicount = 1;
