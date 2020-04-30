@@ -102,4 +102,5 @@ public slots:
 	void extract();
 	void inputButton();
 	void roiButton();
+	void testButton(int argc, char* argv[]);
 };

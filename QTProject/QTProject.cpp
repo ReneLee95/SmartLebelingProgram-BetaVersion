@@ -1,6 +1,10 @@
 #include "QTProject.h"
 #include "Value.h"
 
+using namespace cv::dnn;
+using namespace std;
+using namespace cv;
+
 QTProject::QTProject(QWidget* parent)
 	: QMainWindow(parent) {
 	ui.setupUi(this);
@@ -26,6 +30,7 @@ QTProject::QTProject(QWidget* parent)
 	connect(ui.EllipseButton, SIGNAL(clicked()), this, SLOT(Ellipse()));
 	connect(ui.roiButton, SIGNAL(clicked()), this, SLOT(roiButton()));
 	connect(ui.InputButton, SIGNAL(clicked()), this, SLOT(inputButton()));
+	connect(ui.TextButton, SIGNAL(clicked()), this, SLOT(testButton()));
 
 	mouse_state = false;
 	if (Colorselect == 0) {
@@ -732,4 +737,34 @@ void QTProject::redo(){
 
 void QTProject::Screenshot() {
 
+}
+
+void QTProject::testButton(int argc, char* argv[]) {
+	Mat img;
+
+	if (argc < 2) {
+		img = imread("space_shuttle.jpg", IMREAD_COLOR);
+	}
+	else {
+		img = imread(argv[1], IMREAD_COLOR);
+	}
+
+	if (img.empty()) {
+		cerr << "Image load failed!" << endl;
+		//return -1;
+	}
+
+	Net net = readNet("bvlc_googlenet.caffemodel", "deploy.prototxt");
+
+	if (net.empty()) {
+		cerr << "Network load failed!" << endl;
+		//return -1;
+	}
+
+	ifstream fp("classification_classes_ILSVRC2012.txt");
+
+	if (!fp.is_open()) {
+		cerr << "Class file load failed" << endl;
+		//return -1;
+	}
 }

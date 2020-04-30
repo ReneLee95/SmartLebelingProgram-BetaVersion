@@ -79,6 +79,7 @@ public:
     QGraphicsView *testView;
     QPushButton *InputButton;
     QPushButton *roiButton;
+    QPushButton *testButton;
     QMenuBar *menuBar;
     QMenu *menuQTProject;
     QMenu *menuOption;
@@ -284,6 +285,9 @@ public:
         roiButton = new QPushButton(centralWidget);
         roiButton->setObjectName(QStringLiteral("roiButton"));
         roiButton->setGeometry(QRect(1110, 10, 131, 41));
+        testButton = new QPushButton(centralWidget);
+        testButton->setObjectName(QStringLiteral("testButton"));
+        testButton->setGeometry(QRect(1120, 120, 121, 41));
         QTProjectClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(QTProjectClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
@@ -424,6 +428,7 @@ public:
         EllipseButton->setText(QApplication::translate("QTProjectClass", "Ellipse", Q_NULLPTR));
         InputButton->setText(QApplication::translate("QTProjectClass", "Input", Q_NULLPTR));
         roiButton->setText(QApplication::translate("QTProjectClass", "ROI", Q_NULLPTR));
+        testButton->setText(QApplication::translate("QTProjectClass", "PushButton", Q_NULLPTR));
         menuQTProject->setTitle(QApplication::translate("QTProjectClass", "File", Q_NULLPTR));
         menuOption->setTitle(QApplication::translate("QTProjectClass", "Edit", Q_NULLPTR));
         menuHelp->setTitle(QApplication::translate("QTProjectClass", "Help", Q_NULLPTR));
